@@ -1,0 +1,81 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# Gradle section:
+# Ignore nested build folders, but not the top level one
+# because of the build scripts
+**/build
+!scripts/gradle/build
+**/.gradle
+**/out
+build-cache/
+
+# Gradle section:
+# Ignore nested build folders, but not the top level one
+# because of the build scripts
+**/build
+!scripts/gradle/build
+**/.gradle
+**/out
+build-cache/
+
+
+# Aeron Stuff
+cluster-data/
+archive-mark.dat
+archive.catalog
+cluster-mark.dat
+recording.log
+*.rec
+*.dat
+
+# JMH
+generated_tests
+**/jmh/generated/**
+
+.DS_Store
+
+# Direnv
+.direnv/
+
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
