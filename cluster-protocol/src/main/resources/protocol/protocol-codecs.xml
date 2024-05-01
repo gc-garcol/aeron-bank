@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <sbe:messageSchema xmlns:sbe="http://fixprotocol.io/2016/sbe"
-                   package="io.aeron.samples.cluster.protocol"
+                   package="gc.garcol.protocol"
                    id="101"
                    version="1"
                    semanticVersion="1"
-                   description="Message Codecs for communicating with sample Aeron Cluster.">
+                   description="Message Codecs for communicating with Bank Cluster.">
     <types>
         <composite name="messageHeader" description="Message identifiers and length of message root.">
             <type name="blockLength" primitiveType="uint16"/>
@@ -28,172 +28,83 @@
             <validValue name="FALSE">0</validValue>
             <validValue name="TRUE">1</validValue>
         </enum>
-        <enum name="AddAuctionResult" encodingType="int32">
-            <validValue name="SUCCESS">0</validValue>
-            <validValue name="UNKNOWN_PARTICIPANT">1</validValue>
-            <validValue name="INVALID_START_TIME">2</validValue>
-            <validValue name="INVALID_END_TIME">3</validValue>
-            <validValue name="INVALID_NAME">4</validValue>
-            <validValue name="INVALID_DESCRIPTION">5</validValue>
-            <validValue name="INVALID_DURATION">6</validValue>
-            <validValue name="UNKNOWN">7</validValue>
+        <enum name="AccountStatus" encodingType="int32">
+            <validValue name="OPEN">0</validValue>
+            <validValue name="CLOSED">1</validValue>
+            <validValue name="UNKNOWN">2</validValue>
         </enum>
-        <enum name="AddAuctionBidResult" encodingType="int32">
+        <enum name="CommandResult" encodingType="int32">
             <validValue name="SUCCESS">0</validValue>
-            <validValue name="PRICE_BELOW_CURRENT_WINNING_BID">1</validValue>
-            <validValue name="INVALID_PRICE">2</validValue>
-            <validValue name="UNKNOWN_AUCTION">3</validValue>
-            <validValue name="UNKNOWN_PARTICIPANT">4</validValue>
-            <validValue name="CANNOT_SELF_BID">5</validValue>
-            <validValue name="AUCTION_NOT_OPEN">6</validValue>
-            <validValue name="UNKNOWN">7</validValue>
-        </enum>
-        <enum name="AuctionStatus" encodingType="int32">
-            <validValue name="PRE_OPEN">0</validValue>
-            <validValue name="OPEN">1</validValue>
-            <validValue name="CLOSED">2</validValue>
-            <validValue name="UNKNOWN">3</validValue>
+            <validValue name="FAIL">1</validValue>
+            <validValue name="INVALID_DEPOSIT_AMOUNT">2</validValue>
+            <validValue name="INVALID_WITHDRAW_AMOUNT">3</validValue>
+            <validValue name="ACCOUNT_NOT_FOUND">4</validValue>
         </enum>
         <type name="time" primitiveType="int64" description="Epoch time in milliseconds since 1 Jan 1970 UTC."/>
-        <type name="price" primitiveType="int64" description="Price in whole cents."/>
+        <type name="amount" primitiveType="int64" description="Amount in whole cents."/>
         <type name="uuidString" primitiveType="char" length="36"
               description="36 char UUID held within an ASCII string."/>
     </types>
 
-    <sbe:message name="AddParticipantCommand"
-                 id="1"
-                 description="Add a new Auction Participant">
-        <field name="participantId" id="1" type="int64"/>
+    <!-- COMMAND -->
+    <!-- COMMAND-ADD -->
+    <sbe:message name="AddAccountCommand"
+                 id="100"
+                 description="Add a new account">
+        <field name="accountId" id="1" type="int64"/>
         <field name="correlationId" id="2" type="uuidString"/>
         <data name="name" id="3" type="varUtf8Encoding"/>
     </sbe:message>
 
-    <sbe:message name="AddParticipantCommandResult"
-                 id="2"
-                 description="Result from adding a new Auction Participant">
-        <field name="correlationId" id="1" type="uuidString"/>
-        <field name="participantId" id="2" type="int64"/>
+    <sbe:message name="AddAccountCommandResult"
+                 id="101"
+                 description="Result from an AddAccount, sent to the creator">
+        <field name="accountId" id="1" type="int64"/>
+        <field name="correlationId" id="2" type="uuidString"/>
+        <field name="result" id="3" type="CommandResult"/>
     </sbe:message>
 
-    <sbe:message name="ParticipantSnapshot"
-                 id="3"
-                 description="Snapshot for Participants in the system">
-        <field name="participantId" id="1" type="int64"/>
-        <data name="name" id="2" type="varUtf8Encoding"/>
-    </sbe:message>
-
-    <sbe:message name="CreateAuctionCommand"
-                 id="10"
-                 description="Create a new Auction">
-        <field name="createdByParticipantId" id="1" type="int64"/>
-        <field name="startTime" id="2" type="time"/>
-        <field name="endTime" id="3" type="time"/>
-        <field name="correlationId" id="4" type="uuidString"/>
-        <data name="name" id="5" type="varUtf8Encoding"/>
-        <data name="description" id="6" type="varUtf8Encoding"/>
-    </sbe:message>
-
-    <sbe:message name="CreateAuctionCommandResult"
-                 id="11"
-                 description="Result from an CreateAuction, sent to the creator">
-        <field name="auctionId" id="1" type="int64"/>
-        <field name="result" id="2" type="AddAuctionResult"/>
+    <!-- COMMAND-DEPOSIT -->
+    <sbe:message name="DepositAccountCommand"
+                 id="200"
+                 description="Add a new account">
+        <field name="accountId" id="1" type="int64"/>
+        <field name="amount" id="2" type="amount"/>
         <field name="correlationId" id="3" type="uuidString"/>
     </sbe:message>
 
-    <sbe:message name="NewAuctionEvent"
-                 id="12"
-                 description="Result from an CreateAuction, broadcast to all clients">
-        <field name="auctionId" id="1" type="int64"/>
-        <field name="startTime" id="2" type="time"/>
-        <field name="endTime" id="3" type="time"/>
-        <data name="name" id="4" type="varUtf8Encoding"/>
-        <data name="description" id="5" type="varUtf8Encoding"/>
+    <sbe:message name="DepositAccountCommandResult"
+                 id="201"
+                 description="Result from an DepositAccount, sent to the creator">
+        <field name="correlationId" id="1" type="uuidString"/>
+        <field name="result" id="2" type="CommandResult"/>
     </sbe:message>
 
-    <sbe:message name="AddAuctionBidCommand"
-                 id="13"
-                 description="Create a new auction bid">
-        <field name="auctionId" id="1" type="int64"/>
-        <field name="addedByParticipantId" id="2" type="int64"/>
-        <field name="price" id="3" type="price"/>
-        <field name="correlationId" id="4" type="uuidString"/>
-    </sbe:message>
-
-    <sbe:message name="AddAuctionBidCommandResult"
-                 id="14"
-                 description="Result of creating a new auction bid">
-        <field name="auctionId" id="1" type="int64"/>
-        <field name="result" id="2" type="AddAuctionBidResult"/>
+    <!-- COMMAND-WITHDRAW -->
+    <sbe:message name="WithdrawAccountCommand"
+                 id="300"
+                 description="Add a new account">
+        <field name="accountId" id="1" type="int64"/>
+        <field name="amount" id="2" type="amount"/>
         <field name="correlationId" id="3" type="uuidString"/>
     </sbe:message>
 
-    <sbe:message name="AuctionUpdateEvent"
-                 id="15"
-                 description="Update Event for Auctions">
-        <field name="auctionId" id="1" type="int64"/>
-        <field name="status" id="2" type="AuctionStatus"/>
-        <field name="currentPrice" id="3" type="price"/>
-        <field name="bidCount" id="4" type="int32"/>
-        <field name="lastUpdate" id="5" type="time"/>
-        <field name="winningParticipantId" id="6" type="int64"/>
-        <field name="correlationId" id="7" type="uuidString"/>
+    <sbe:message name="WithdrawAccountCommandResult"
+                 id="301"
+                 description="Result from an DepositAccount, sent to the creator">
+        <field name="correlationId" id="1" type="uuidString"/>
+        <field name="result" id="2" type="CommandResult"/>
     </sbe:message>
 
-    <sbe:message name="AuctionSnapshot"
-                 id="16"
-                 description="Snapshot an Auction">
-        <field name="auctionId" id="1" type="int64"/>
-        <field name="createdByParticipantId" id="2" type="int64"/>
-        <field name="startTime" id="3" type="time"/>
-        <field name="startTimeTimerCorrelation" id="4" type="int64"/>
-        <field name="endTime" id="5" type="time"/>
-        <field name="endTimeTimerCorrelation" id="6" type="int64"/>
-        <field name="removalTimeTimerCorrelation" id="7" type="int64"/>
-        <field name="winningParticipantId" id="8" type="int64"/>
-        <data name="name" id="9" type="varUtf8Encoding"/>
-        <data name="description" id="10" type="varUtf8Encoding"/>
-    </sbe:message>
-
-    <sbe:message name="AuctionIdSnapshot"
-                 id="17"
-                 description="Snapshot for the Auction ID generator">
-        <field name="lastId" id="1" type="int64"/>
-    </sbe:message>
-
-    <sbe:message name="EndOfSnapshot"
-                 id="20"
-                 description="Marks the end of snapshot data">
-    </sbe:message>
-
-    <sbe:message name="ListAuctionsCommand"
-                 id="30"
-                 description="Requests the cluster to list all auctions">
+    <!-- QUERY -->
+    <sbe:message name="AccountListQuery" id="400" description="Requests the cluster to list all accounts">
         <field name="correlationId" id="1" type="uuidString"/>
     </sbe:message>
 
-    <sbe:message name="AuctionList" id="31" description="List of auctions">
+    <sbe:message name="AccountListQueryResult" id="401" description="List of cluster participants">
         <field name="correlationId" id="1" type="uuidString"/>
-        <group name="auctions" id="2" dimensionType="groupSizeEncoding">
-            <field name="auctionId" id="1" type="int64"/>
-            <field name="createdByParticipantId" id="2" type="int64"/>
-            <field name="startTime" id="3" type="time"/>
-            <field name="endTime" id="4" type="time"/>
-            <field name="winningParticipantId" id="5" type="int64"/>
-            <field name="currentPrice" id="6" type="int64"/>
-            <field name="status" id="7" type="AuctionStatus"/>
-            <data name="name" id="8" type="varUtf8Encoding"/>
-        </group>
-    </sbe:message>
-
-    <sbe:message name="ListParticipantsCommand" id="32" description="Requests the cluster to list all participants">
-        <field name="correlationId" id="1" type="uuidString"/>
-    </sbe:message>
-
-    <sbe:message name="ParticipantList" id="33" description="List of cluster participants">
-        <field name="correlationId" id="1" type="uuidString"/>
-        <group name="participants" id="2" dimensionType="groupSizeEncoding">
-            <field name="participantId" id="1" type="int64"/>
+        <group name="accounts" id="2" dimensionType="groupSizeEncoding">
+            <field name="accountId" id="1" type="int64"/>
             <data name="name" id="2" type="varUtf8Encoding"/>
         </group>
     </sbe:message>
