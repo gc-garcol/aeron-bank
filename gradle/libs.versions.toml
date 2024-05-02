@@ -23,8 +23,8 @@ checkstyle = { group = "com.puppycrawl.tools", name = "checkstyle", version.ref 
 slf4j = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4jVersion" }
 logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logbackVersion" }
 picocli = { group = "info.picocli", name = "picocli", version.ref = "picocliVersion" }
-mockito-core = { group = "org.mockito", name="mockito-core", version.ref = "mockitoVersion"}
-mockito-junit = { group = "org.mockito", name="mockito-junit-jupiter", version.ref = "mockitoVersion"}
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoVersion" }
+mockito-junit = { group = "org.mockito", name = "mockito-junit-jupiter", version.ref = "mockitoVersion" }
 jline = { group = "org.jline", name = "jline", version.ref = "jlineVersion" }
 picoJline = { group = "info.picocli", name = "picocli-shell-jline3", version.ref = "picoJlineVersion" }
 junitPlatformLauncher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junitPlatformLauncherVersion" }

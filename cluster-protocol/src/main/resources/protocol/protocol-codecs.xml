@@ -56,7 +56,7 @@
         <data name="name" id="3" type="varUtf8Encoding"/>
     </sbe:message>
 
-    <sbe:message name="AddAccountCommandResult"
+    <sbe:message name="AddAccountResult"
                  id="101"
                  description="Result from an AddAccount, sent to the creator">
         <field name="accountId" id="1" type="int64"/>
@@ -73,7 +73,7 @@
         <field name="correlationId" id="3" type="uuidString"/>
     </sbe:message>
 
-    <sbe:message name="DepositAccountCommandResult"
+    <sbe:message name="DepositAccountResult"
                  id="201"
                  description="Result from an DepositAccount, sent to the creator">
         <field name="correlationId" id="1" type="uuidString"/>
@@ -89,7 +89,7 @@
         <field name="correlationId" id="3" type="uuidString"/>
     </sbe:message>
 
-    <sbe:message name="WithdrawAccountCommandResult"
+    <sbe:message name="WithdrawAccountResult"
                  id="301"
                  description="Result from an DepositAccount, sent to the creator">
         <field name="correlationId" id="1" type="uuidString"/>
