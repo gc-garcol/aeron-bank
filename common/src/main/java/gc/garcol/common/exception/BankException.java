@@ -1,4 +1,4 @@
-package gc.garcol.cluster.exception;
+package gc.garcol.common.exception;
 
 /**
  * @author thaivc

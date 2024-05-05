@@ -2,7 +2,7 @@ package gc.garcol.cluster.domain.account;
 
 import gc.garcol.cluster.domain.SessionMessageContext;
 import gc.garcol.cluster.domain.TimerManager;
-import gc.garcol.cluster.exception.Bank4xxException;
+import gc.garcol.common.exception.Bank4xxException;
 import lombok.RequiredArgsConstructor;
 import org.agrona.collections.Long2ObjectHashMap;
 import org.agrona.collections.MutableLong;

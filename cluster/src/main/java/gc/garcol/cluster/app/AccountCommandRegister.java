@@ -1,9 +1,9 @@
 package gc.garcol.cluster.app;
 
 import gc.garcol.cluster.domain.account.Accounts;
-import gc.garcol.cluster.infra.CommandHandlerMethod;
-import gc.garcol.cluster.infra.SbeCommandDispatcher;
 import gc.garcol.cluster.infra.SbeCommandDispatcherImpl;
+import gc.garcol.common.core.CommandHandlerMethod;
+import gc.garcol.common.core.SbeCommandDispatcher;
 import gc.garcol.protocol.AddAccountCommandDecoder;
 import gc.garcol.protocol.DepositAccountCommandDecoder;
 import gc.garcol.protocol.MessageHeaderDecoder;

@@ -1,4 +1,4 @@
-package gc.garcol.cluster.infra;
+package gc.garcol.common.core;
 
 import io.aeron.Image;
 import io.aeron.logbuffer.FragmentHandler;

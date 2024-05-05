@@ -2,6 +2,7 @@ package gc.garcol.cluster.infra;
 
 import gc.garcol.cluster.domain.SessionMessageContext;
 import gc.garcol.cluster.domain.account.Accounts;
+import gc.garcol.common.core.SnapshotManager;
 import io.aeron.Image;
 import io.aeron.logbuffer.Header;
 import lombok.RequiredArgsConstructor;

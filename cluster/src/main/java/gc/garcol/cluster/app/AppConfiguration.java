@@ -7,6 +7,8 @@ import gc.garcol.cluster.infra.*;
 import gc.garcol.cluster.infra.adapter.domain.AccountAccountClusterClientResponderAdapter;
 import gc.garcol.cluster.infra.adapter.domain.SessionMessageContextAdapter;
 import gc.garcol.cluster.infra.adapter.domain.TimerManagerAdapter;
+import gc.garcol.common.core.ClientSessions;
+import gc.garcol.common.core.SnapshotManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

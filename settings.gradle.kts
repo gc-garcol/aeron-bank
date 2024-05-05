@@ -8,6 +8,6 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
-include("cluster-protocol", "cluster")
+include("common", "cluster-protocol", "cluster")
 
 rootProject.name = "aeron-bank"

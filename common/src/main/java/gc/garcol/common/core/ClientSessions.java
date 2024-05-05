@@ -1,6 +1,7 @@
-package gc.garcol.cluster.infra;
+package gc.garcol.common.core;
 
 import io.aeron.cluster.service.ClientSession;
+
 import java.util.List;
 
 /**

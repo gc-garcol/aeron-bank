@@ -1,6 +1,6 @@
 package gc.garcol.cluster.infra.adapter.domain;
 
-import gc.garcol.cluster.infra.ClientSessions;
+import gc.garcol.common.core.ClientSessions;
 import io.aeron.Publication;
 import io.aeron.cluster.service.ClientSession;
 import lombok.Getter;
