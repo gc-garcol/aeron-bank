@@ -1,4 +1,4 @@
-package gc.garcol.cluster.domain;
+package gc.garcol.cluster.domain.account;
 
 import gc.garcol.cluster.domain.account.AccountResponseCode;
 
@@ -6,7 +6,7 @@ import gc.garcol.cluster.domain.account.AccountResponseCode;
  * @author thaivc
  * @since 2024
  */
-public interface ClusterClientResponder {
+public interface AccountClusterClientResponder {
 
   void onAccountAdded(String correlationId, long accountId, AccountResponseCode result);
 
