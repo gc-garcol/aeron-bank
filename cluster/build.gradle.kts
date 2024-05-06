@@ -28,11 +28,11 @@ dependencies {
 }
 
 tasks {
-    task ("uberJar", Jar::class) {
+    task("uberJar", Jar::class) {
         group = "uber"
         manifest {
-            attributes["Main-Class"]="gc.garcol.cluster.ClusterApplication"
-            attributes["Add-Opens"]="java.base/sun.nio.ch"
+            attributes["Main-Class"] = "gc.garcol.cluster.ClusterApplication"
+            attributes["Add-Opens"] = "java.base/sun.nio.ch"
         }
         archiveClassifier.set("uber")
         from(sourceSets.main.get().output)

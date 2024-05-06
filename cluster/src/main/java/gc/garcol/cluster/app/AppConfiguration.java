@@ -3,11 +3,14 @@ package gc.garcol.cluster.app;
 import gc.garcol.cluster.domain.TimerManager;
 import gc.garcol.cluster.domain.account.AccountClusterClientResponder;
 import gc.garcol.cluster.domain.account.Accounts;
-import gc.garcol.cluster.infra.*;
-import gc.garcol.cluster.infra.adapter.domain.AccountAccountClusterClientResponderAdapter;
+import gc.garcol.cluster.infra.AppClusteredService;
+import gc.garcol.cluster.infra.ClientSessionsImpl;
+import gc.garcol.cluster.infra.SnapshotManagerImpl;
+import gc.garcol.cluster.infra.adapter.domain.AccountClusterClientResponderAdapter;
 import gc.garcol.cluster.infra.adapter.domain.SessionMessageContextAdapter;
 import gc.garcol.cluster.infra.adapter.domain.TimerManagerAdapter;
 import gc.garcol.common.core.ClientSessions;
+import gc.garcol.common.core.SbeCommandDispatcher;
 import gc.garcol.common.core.SnapshotManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +34,7 @@ public class AppConfiguration {
 
     @Bean
     public AccountClusterClientResponder clusterClientResponder(final SessionMessageContextAdapter context) {
-        return new AccountAccountClusterClientResponderAdapter(context);
+        return new AccountClusterClientResponderAdapter(context);
     }
 
     @Bean
@@ -60,7 +63,8 @@ public class AppConfiguration {
         final AccountClusterClientResponder accountClusterClientResponder,
         final TimerManager timerManager,
         final Accounts accounts,
-        final SnapshotManager snapshotManager
+        final SnapshotManager snapshotManager,
+        final SbeCommandDispatcher sbeCommandDispatcher
     ) {
         return new AppClusteredService(
             clientSessions,
@@ -68,7 +72,8 @@ public class AppConfiguration {
             accountClusterClientResponder,
             timerManager,
             accounts,
-            snapshotManager
+            snapshotManager,
+            sbeCommandDispatcher
         );
     }
 }

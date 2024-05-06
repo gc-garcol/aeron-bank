@@ -20,9 +20,9 @@ public class TimerManagerAdapter implements TimerManager {
     // inject session
     private final SessionMessageContext context;
 
+    private final Long2ObjectHashMap<Runnable> correlationIdToRunnable = new Long2ObjectHashMap<>();
     @Setter
     private Cluster cluster;
-    private final Long2ObjectHashMap<Runnable> correlationIdToRunnable = new Long2ObjectHashMap<>();
     private long correlationId = 0;
 
     @Override

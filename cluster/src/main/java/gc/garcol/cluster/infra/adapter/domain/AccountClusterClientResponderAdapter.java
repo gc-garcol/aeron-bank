@@ -1,7 +1,7 @@
 package gc.garcol.cluster.infra.adapter.domain;
 
-import gc.garcol.cluster.domain.account.AccountClusterClientResponder;
 import gc.garcol.cluster.domain.SessionMessageContext;
+import gc.garcol.cluster.domain.account.AccountClusterClientResponder;
 import gc.garcol.cluster.domain.account.AccountResponseCode;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
  * @since 2024
  */
 @RequiredArgsConstructor
-public class AccountAccountClusterClientResponderAdapter implements AccountClusterClientResponder {
+public class AccountClusterClientResponderAdapter implements AccountClusterClientResponder {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccountAccountClusterClientResponderAdapter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountClusterClientResponderAdapter.class);
 
     private final SessionMessageContext context;
 

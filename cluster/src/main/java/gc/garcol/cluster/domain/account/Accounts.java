@@ -3,6 +3,7 @@ package gc.garcol.cluster.domain.account;
 import gc.garcol.cluster.domain.SessionMessageContext;
 import gc.garcol.cluster.domain.TimerManager;
 import gc.garcol.common.exception.Bank4xxException;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.agrona.collections.Long2ObjectHashMap;
 import org.agrona.collections.MutableLong;
@@ -20,7 +21,10 @@ public class Accounts implements AccountUseCase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Accounts.class);
 
+    @Getter
     private final Long2ObjectHashMap<Account> accounts = new Long2ObjectHashMap<>();
+
+    @Getter
     private final MutableLong idGenerator = new MutableLong(0);
 
     // Injected dependencies

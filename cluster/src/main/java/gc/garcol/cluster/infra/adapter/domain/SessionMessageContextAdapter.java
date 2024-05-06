@@ -37,31 +37,46 @@ public class SessionMessageContextAdapter extends AbstractSessionMessageContext 
     @Setter
     private ClientSession session;
 
+    private long timestamp;
+
     @Override
     protected void offerToSession(ClientSession targetSession, DirectBuffer buffer, int offset, int length) {
         Objects.requireNonNull(idleStrategy, "idleStrategy must be set");
         int retries = 0;
         while (retries < RETRY_COUNT) {
             final long result = targetSession.offer(buffer, offset, length);
-            switch ((int) result) {
-                case (int) Publication.ADMIN_ACTION, (int) Publication.BACK_PRESSURED -> {
-                    LOGGER.warn("backpressure or admin action on session offer");
-                }
-                case (int) Publication.NOT_CONNECTED, (int) Publication.MAX_POSITION_EXCEEDED -> {
-                    LOGGER.error("unexpected state on session offer: {}", result);
-                    return;
-                }
-                default -> {
-                    if (result > 0) {
-                        return;
-                    }
-                }
+            if (result > 0L) {
+                return;
+            } else if (result == Publication.ADMIN_ACTION || result == Publication.BACK_PRESSURED) {
+                LOGGER.warn("backpressure or admin action on snapshot");
+            } else if (result == Publication.NOT_CONNECTED || result == Publication.MAX_POSITION_EXCEEDED) {
+                LOGGER.error("unexpected publication state on snapshot: {}", result);
+                return;
             }
             idleStrategy.idle();
             retries += 1;
         }
-        LOGGER.error("failed to offer snapshot within {} retries. Closing client session.",
-            RETRY_COUNT);
+        LOGGER.error("failed to offer snapshot within {} retries. Closing client session.", RETRY_COUNT);
         session.close();
+    }
+
+    /**
+     * Sets the session context for this cluster message
+     *
+     * @param session   the session
+     * @param timestamp the timestamp
+     */
+    public void setSessionContext(final ClientSession session, final long timestamp) {
+        this.timestamp = timestamp;
+        this.session = session;
+    }
+
+    /**
+     * Sets the cluster timestamp for the current context
+     *
+     * @param timestamp
+     */
+    public void setClusterTime(final long timestamp) {
+        this.timestamp = timestamp;
     }
 }

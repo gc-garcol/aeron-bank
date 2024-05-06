@@ -16,3 +16,8 @@
 ```shell
 docker-compose up &
 ```
+
+### Generate SBE codecs
+```shell
+./gradlew generateCodecs
+```
