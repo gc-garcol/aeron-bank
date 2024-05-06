@@ -70,13 +70,4 @@ public class SessionMessageContextAdapter extends AbstractSessionMessageContext 
         this.timestamp = timestamp;
         this.session = session;
     }
-
-    /**
-     * Sets the cluster timestamp for the current context
-     *
-     * @param timestamp
-     */
-    public void setClusterTime(final long timestamp) {
-        this.timestamp = timestamp;
-    }
 }

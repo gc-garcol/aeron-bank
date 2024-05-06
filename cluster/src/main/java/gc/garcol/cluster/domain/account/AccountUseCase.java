@@ -5,15 +5,15 @@ package gc.garcol.cluster.domain.account;
  * @since 2024
  */
 public interface AccountUseCase {
-    void openAccount(long accountId);
+    void openAccount(String correlationId, long accountId);
 
-    void withdraw(long accountId, long amount);
+    void withdraw(String correlationId, long accountId, long amount);
 
-    void deposit(long accountId, long amount);
+    void deposit(String correlationId, long accountId, long amount);
 
-    void transfer(long fromAccountId, long toAccountId, long amount);
+    void transfer(String correlationId, long fromAccountId, long toAccountId, long amount);
 
-    void transferMulti(long fromAccount, long[] toAccounts, long[] amounts);
+    void transferMulti(String correlationId, long fromAccount, long[] toAccounts, long[] amounts);
 
-    void closeAccount(long accountId);
+    void closeAccount(String correlationId, long accountId);
 }

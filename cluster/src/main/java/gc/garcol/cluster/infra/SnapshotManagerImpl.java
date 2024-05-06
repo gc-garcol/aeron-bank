@@ -47,6 +47,17 @@ public class SnapshotManagerImpl implements SnapshotManager {
 
     @Override
     public void onFragment(DirectBuffer buffer, int offset, int length, Header header) {
+        if (length < MessageHeaderDecoder.ENCODED_LENGTH) {
+            return;
+        }
+        headerDecoder.wrap(buffer, offset);
+
+        switch (headerDecoder.templateId()) {
+            case AccountIdSnapshotDecoder.TEMPLATE_ID -> onAccountIdGeneratorSnapshot(buffer, offset, length);
+            case AccountSnapshotDecoder.TEMPLATE_ID -> onAccountSnapshot(buffer, offset, length);
+            case EndOfSnapshotDecoder.TEMPLATE_ID -> onEndOfSnapshot(buffer, offset, length);
+            default -> LOGGER.warn("Unknown template id: {}", headerDecoder.templateId());
+        }
     }
 
     @Override
@@ -139,6 +150,24 @@ public class SnapshotManagerImpl implements SnapshotManager {
             retries += 1;
         }
         LOGGER.error("failed to offer snapshot within {} retries", RETRY_COUNT);
+    }
+
+    private void onAccountSnapshot(final DirectBuffer buffer, final int offset, final int length) {
+        accountSnapshotDecoder.wrapAndApplyHeader(buffer, offset, headerDecoder);
+        final long id = accountSnapshotDecoder.id();
+        final long amount = accountSnapshotDecoder.amount();
+        final boolean active = accountSnapshotDecoder.active() == BooleanType.TRUE;
+        accounts.restoreAccount(id, amount, active);
+    }
+
+    private void onAccountIdGeneratorSnapshot(final DirectBuffer buffer, final int offset, final int length) {
+        accountIdSnapshotDecoder.wrapAndApplyHeader(buffer, offset, headerDecoder);
+        final long lastId = accountIdSnapshotDecoder.lastId();
+        accounts.restoreAutoIdGenerator(lastId);
+    }
+
+    private void onEndOfSnapshot(final DirectBuffer buffer, final int offset, final int length) {
+        snapshotFullyLoaded = true;
     }
 
 }

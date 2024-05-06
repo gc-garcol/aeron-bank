@@ -34,8 +34,10 @@ public class AccountCommandRegister {
 
     @Bean
     public CommandHandlerMethod addAccountCommandHandler(SbeCommandDispatcher accountSbeCommandDispatcher) {
-        CommandHandlerMethod handler = (buffer, offset) ->
+        CommandHandlerMethod handler = (buffer, offset) -> {
             addAccountCommandDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
+            accounts.openAccount(addAccountCommandDecoder.correlationId(), addAccountCommandDecoder.accountId());
+        };
         accountSbeCommandDispatcher.registerHandler(AddAccountCommandDecoder.TEMPLATE_ID, handler);
         return handler;
     }
@@ -44,7 +46,11 @@ public class AccountCommandRegister {
     public CommandHandlerMethod depositAccountCommandHandler(SbeCommandDispatcher accountSbeCommandDispatcher) {
         CommandHandlerMethod handler = (buffer, offset) -> {
             depositAccountCommandDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
-            accounts.openAccount(depositAccountCommandDecoder.accountId());
+            accounts.withdraw(
+                depositAccountCommandDecoder.correlationId(),
+                depositAccountCommandDecoder.accountId(),
+                depositAccountCommandDecoder.amount()
+            );
         };
         accountSbeCommandDispatcher.registerHandler(DepositAccountCommandDecoder.TEMPLATE_ID, handler);
         return handler;
@@ -54,7 +60,11 @@ public class AccountCommandRegister {
     public CommandHandlerMethod withdrawAccountCommandHandler(SbeCommandDispatcher accountSbeCommandDispatcher) {
         CommandHandlerMethod handler = (buffer, offset) -> {
             withdrawAccountCommandDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
-            accounts.deposit(withdrawAccountCommandDecoder.accountId(), withdrawAccountCommandDecoder.amount());
+            accounts.deposit(
+                withdrawAccountCommandDecoder.correlationId(),
+                withdrawAccountCommandDecoder.accountId(),
+                withdrawAccountCommandDecoder.amount()
+            );
         };
         accountSbeCommandDispatcher.registerHandler(DepositAccountCommandDecoder.TEMPLATE_ID, handler);
         return handler;
