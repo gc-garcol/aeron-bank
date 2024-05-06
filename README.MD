@@ -11,9 +11,9 @@
 ## Run project
 ```shell
 ./gradlew
-```
 
-```shell
+docker-compose build --no-cache
+
 docker-compose up &
 ```
 
