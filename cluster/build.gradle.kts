@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "gc.garcol"
-version = "0.0.1"
+//version = "0.0.1"
 
 configurations {
     compileOnly {
@@ -25,4 +25,21 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
+}
+
+tasks {
+    task ("uberJar", Jar::class) {
+        group = "uber"
+        manifest {
+            attributes["Main-Class"]="gc.garcol.cluster.ClusterApplication"
+            attributes["Add-Opens"]="java.base/sun.nio.ch"
+        }
+        archiveClassifier.set("uber")
+        from(sourceSets.main.get().output)
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        dependsOn(configurations.runtimeClasspath)
+        from({
+            configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+        })
+    }
 }
