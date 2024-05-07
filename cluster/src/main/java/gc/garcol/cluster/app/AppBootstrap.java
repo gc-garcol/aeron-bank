@@ -43,6 +43,7 @@ public class AppBootstrap {
 
     @EventListener(ApplicationReadyEvent.class)
     public void start() {
+        LOGGER.info("Starting Cluster Node... {} {} {}", hosts, node, port);
         final ShutdownSignalBarrier barrier = new ShutdownSignalBarrier();
         final List<String> hostAddresses = List.of(hosts.split(","));
         final ClusterConfig clusterConfig = ClusterConfig.create(
