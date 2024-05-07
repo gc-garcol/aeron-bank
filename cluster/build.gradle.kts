@@ -28,6 +28,13 @@ dependencies {
 }
 
 tasks {
+    task("runSingleNodeCluster", JavaExec::class) {
+        group = "run"
+        classpath = sourceSets.main.get().runtimeClasspath
+        mainClass.set("gc.garcol.cluster.ClusterApplication")
+        jvmArgs("--add-opens=java.base/sun.nio.ch=ALL-UNNAMED")
+    }
+
     task("uberJar", Jar::class) {
         group = "uber"
         manifest {
