@@ -79,3 +79,6 @@ generated_tests
 
 # Ignore Gradle build output directory
 build
+
+## cluster
+node**
