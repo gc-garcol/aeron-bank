@@ -5,10 +5,7 @@ import gc.garcol.cluster.infra.AccountCommandHandler;
 import gc.garcol.cluster.infra.AccountCommandHandlerImpl;
 import gc.garcol.cluster.infra.SbeCommandDispatcherImpl;
 import gc.garcol.common.core.SbeCommandDispatcher;
-import gc.garcol.protocol.AddAccountCommandDecoder;
-import gc.garcol.protocol.DepositAccountCommandDecoder;
-import gc.garcol.protocol.MessageHeaderDecoder;
-import gc.garcol.protocol.WithdrawAccountCommandDecoder;
+import gc.garcol.protocol.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,6 +32,7 @@ public class AccountCommandRegister {
         sbeCommandDispatcher.registerHandler(AddAccountCommandDecoder.TEMPLATE_ID, accountHandler::addAccountCommandHandler);
         sbeCommandDispatcher.registerHandler(DepositAccountCommandDecoder.TEMPLATE_ID, accountHandler::depositAccountCommandHandler);
         sbeCommandDispatcher.registerHandler(WithdrawAccountCommandDecoder.TEMPLATE_ID, accountHandler::withdrawAccountCommandHandler);
+        sbeCommandDispatcher.registerHandler(TransferAccountCommandDecoder.TEMPLATE_ID, accountHandler::transferAccountCommandHandler);
         return accountHandler;
     }
 
