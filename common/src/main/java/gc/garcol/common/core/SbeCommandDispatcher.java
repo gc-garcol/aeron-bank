@@ -8,6 +8,13 @@ import org.agrona.DirectBuffer;
  */
 public interface SbeCommandDispatcher {
     /**
+     * Hash the commandId to find the appropriate handler.
+     * @param commandId
+     * @return the hash value
+     */
+    int hashCommand(int commandId);
+
+    /**
      *
      * @param commandId the command TEMPLATE_ID must be unique and divisible by 100
      * @param handler

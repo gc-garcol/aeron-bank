@@ -22,8 +22,13 @@ public class SbeCommandDispatcherImpl implements SbeCommandDispatcher {
     private final MessageHeaderDecoder headerDecoder;
 
     @Override
+    public int hashCommand(int commandId) {
+        return commandId / 100;
+    }
+
+    @Override
     public void registerHandler(int commandId, CommandHandlerMethod handler) {
-        int hashId = commandId / 100;
+        int hashId = hashCommand(commandId);
         if (hashId >= handlers.length) {
             LOGGER.info("CommandId large, extends handlers array.");
             var newHandlers = new CommandHandlerMethod[Math.max(hashId, handlers.length + handlers.length >> 1)];
@@ -39,9 +44,15 @@ public class SbeCommandDispatcherImpl implements SbeCommandDispatcher {
             LOGGER.error("Message too short, ignored.");
             return;
         }
+        int hashId = hashCommand(headerDecoder.templateId());
+        if (hashId < 0 || hashId >= handlers.length) {
+            LOGGER.error("Invalid templateId: {}", headerDecoder.templateId());
+            return;
+        }
+
         headerDecoder.wrap(buffer, offset);
-        if (handlers[headerDecoder.templateId()] != null) {
-            handlers[headerDecoder.templateId()].handle(buffer, offset);
+        if (handlers[hashId] != null) {
+            handlers[hashId].handle(buffer, offset);
         } else {
             LOGGER.error("No handler for templateId: {}", headerDecoder.templateId());
         }

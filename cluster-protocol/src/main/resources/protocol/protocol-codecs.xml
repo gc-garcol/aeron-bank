@@ -116,12 +116,43 @@
         <field name="result" id="2" type="CommandResult"/>
     </sbe:message>
 
+    <!-- COMMAND-TRANSFER -->
+    <sbe:message name="TransferAccountCommand"
+                 id="400"
+                 description="Add a new account">
+        <field name="fromAccountId" id="1" type="int64"/>
+        <field name="toAccountId" id="2" type="int64"/>
+        <field name="amount" id="3" type="int64"/>
+        <field name="correlationId" id="4" type="uuidString"/>
+    </sbe:message>
+    <sbe:message name="TransferAccountResult"
+                 id="401"
+                 description="Result from an DepositAccount, sent to the creator">
+        <field name="correlationId" id="1" type="uuidString"/>
+        <field name="result" id="2" type="CommandResult"/>
+    </sbe:message>
+
+    <!-- COMMAND-CLOSE -->
+    <sbe:message name="CloseAccountCommand"
+                 id="500"
+                 description="Add a new account">
+        <field name="accountId" id="1" type="int64"/>
+        <field name="correlationId" id="2" type="uuidString"/>
+    </sbe:message>
+    <sbe:message name="CloseAccountResult"
+                 id="501"
+                 description="Result from an DepositAccount, sent to the creator">
+        <field name="correlationId" id="1" type="uuidString"/>
+        <field name="result" id="2" type="CommandResult"/>
+    </sbe:message>
+
+
     <!-- QUERY -->
-    <sbe:message name="AccountListQuery" id="400" description="Requests the cluster to list all accounts">
+    <sbe:message name="AccountListQuery" id="10000" description="Requests the cluster to list all accounts">
         <field name="correlationId" id="1" type="uuidString"/>
     </sbe:message>
 
-    <sbe:message name="AccountListQueryResult" id="401" description="List of cluster participants">
+    <sbe:message name="AccountListQueryResult" id="10001" description="List of cluster participants">
         <field name="correlationId" id="1" type="uuidString"/>
         <group name="accounts" id="2" dimensionType="groupSizeEncoding">
             <field name="accountId" id="1" type="int64"/>
