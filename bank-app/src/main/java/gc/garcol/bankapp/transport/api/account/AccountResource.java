@@ -18,7 +18,7 @@ public class AccountResource {
 
     private final AccountCommandInboundService accountCommandInboundService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> createAccount() {
         var correlationId = UUID.randomUUID().toString();
         var generatedAccountId = UUID.randomUUID().toString();
@@ -26,5 +26,15 @@ public class AccountResource {
         accountCommandInboundService.addAccount(new CreateAccountCommand(correlationId));
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/deposit")
+    public ResponseEntity<?> deposit() {
+        var correlationId = UUID.randomUUID().toString();
+        var accountId = UUID.randomUUID().toString();
+        log.info("Depositing {} to account {} with correlationId: {}", amount, accountId, correlationId);
+        accountCommandInboundService.deposit(new DepositAccountCommand(correlationId, accountId, amount));
+        return ResponseEntity.ok().build();
+    }
+
 
 }
