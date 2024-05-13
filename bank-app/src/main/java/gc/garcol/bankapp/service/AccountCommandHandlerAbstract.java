@@ -1,5 +1,6 @@
 package gc.garcol.bankapp.service;
 
+import gc.garcol.protocol.ConnectClusterDecoder;
 import gc.garcol.protocol.MessageHeaderDecoder;
 import gc.garcol.protocol.MessageHeaderEncoder;
 import org.agrona.MutableDirectBuffer;
@@ -10,6 +11,8 @@ public abstract class AccountCommandHandlerAbstract implements Agent, MessageHan
 
     protected final MessageHeaderDecoder messageHeaderDecoder = new MessageHeaderDecoder();
     protected final MessageHeaderEncoder messageHeaderEncoder = new MessageHeaderEncoder();
+
+    protected final ConnectClusterDecoder connectClusterDecoder = new ConnectClusterDecoder();
 
     @Override
     public void onMessage(int msgTypeId, MutableDirectBuffer buffer, int index, int length) {
