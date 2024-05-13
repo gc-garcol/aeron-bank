@@ -29,7 +29,7 @@ public class AccountCommandRegister {
     @Bean
     public AccountCommandHandler accountCommandHandler(SbeCommandDispatcher sbeCommandDispatcher) {
         var accountHandler = new AccountCommandHandlerImpl(accounts);
-        sbeCommandDispatcher.registerHandler(AddAccountCommandDecoder.TEMPLATE_ID, accountHandler::addAccountCommandHandler);
+        sbeCommandDispatcher.registerHandler(CreateAccountCommandDecoder.TEMPLATE_ID, accountHandler::createAccountCommandHandler);
         sbeCommandDispatcher.registerHandler(DepositAccountCommandDecoder.TEMPLATE_ID, accountHandler::depositAccountCommandHandler);
         sbeCommandDispatcher.registerHandler(WithdrawAccountCommandDecoder.TEMPLATE_ID, accountHandler::withdrawAccountCommandHandler);
         sbeCommandDispatcher.registerHandler(TransferAccountCommandDecoder.TEMPLATE_ID, accountHandler::transferAccountCommandHandler);

@@ -8,7 +8,7 @@ public interface AccountClusterClientResponder {
 
     void onAccountAdded(String correlationId, long accountId, AccountResponseCode result);
 
-    void rejectAddAccount(String correlationId, AccountResponseCode result);
+    void rejectCreateAccount(String correlationId, AccountResponseCode result);
 
     void onAccountWithdrawn(String correlationId, long accountId, long amount,
                             AccountResponseCode result);
