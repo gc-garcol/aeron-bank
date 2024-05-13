@@ -1,10 +1,10 @@
 package gc.garcol.bankapp.service;
 
 import gc.garcol.bankapp.service.constants.ServerConstant;
-import gc.garcol.bankapp.transport.api.account.CreateAccountCommand;
-import gc.garcol.bankapp.transport.api.account.DepositAccountCommand;
-import gc.garcol.bankapp.transport.api.account.TransferBalanceCommand;
-import gc.garcol.bankapp.transport.api.account.WithdrawAccountCommand;
+import gc.garcol.bankapp.transport.api.account.command.CreateAccountCommand;
+import gc.garcol.bankapp.transport.api.account.command.DepositAccountCommand;
+import gc.garcol.bankapp.transport.api.account.command.TransferBalanceCommand;
+import gc.garcol.bankapp.transport.api.account.command.WithdrawAccountCommand;
 import gc.garcol.common.exception.Bank5xxException;
 import gc.garcol.protocol.MessageHeaderEncoder;
 import lombok.Getter;
@@ -22,36 +22,36 @@ public class AccountCommandDispatcherImpl extends AccountCommandDispatcherAbstra
 
     @Override
     public void createAccount(CreateAccountCommand command) {
-        createAccountCommandEncoder.wrapAndApplyHeader(buffer, 0, messageHeaderEncoder);
-        createAccountCommandEncoder.correlationId(command.getCorrelationId());
+        createAccountCommandBufferEncoder.wrapAndApplyHeader(buffer, 0, messageHeaderEncoder);
+        createAccountCommandBufferEncoder.correlationId(command.getCorrelationId());
         offerRingBufferMessage(buffer, 0, MessageHeaderEncoder.ENCODED_LENGTH);
     }
 
     @Override
     public void deposit(DepositAccountCommand command) {
-        depositAccountCommandEncoder.wrapAndApplyHeader(buffer, 0, messageHeaderEncoder);
-        depositAccountCommandEncoder.correlationId(command.getCorrelationId());
-        depositAccountCommandEncoder.accountId(command.getAccountId());
-        depositAccountCommandEncoder.amount(command.getAmount());
+        depositAccountCommandBufferEncoder.wrapAndApplyHeader(buffer, 0, messageHeaderEncoder);
+        depositAccountCommandBufferEncoder.correlationId(command.getCorrelationId());
+        depositAccountCommandBufferEncoder.accountId(command.getAccountId());
+        depositAccountCommandBufferEncoder.amount(command.getAmount());
         offerRingBufferMessage(buffer, 0, MessageHeaderEncoder.ENCODED_LENGTH);
     }
 
     @Override
     public void withdraw(WithdrawAccountCommand command) {
-        withdrawAccountCommandEncoder.wrapAndApplyHeader(buffer, 0, messageHeaderEncoder);
-        withdrawAccountCommandEncoder.correlationId(command.getCorrelationId());
-        withdrawAccountCommandEncoder.accountId(command.getAccountId());
-        withdrawAccountCommandEncoder.amount(command.getAmount());
+        withdrawAccountCommandBufferEncoder.wrapAndApplyHeader(buffer, 0, messageHeaderEncoder);
+        withdrawAccountCommandBufferEncoder.correlationId(command.getCorrelationId());
+        withdrawAccountCommandBufferEncoder.accountId(command.getAccountId());
+        withdrawAccountCommandBufferEncoder.amount(command.getAmount());
         offerRingBufferMessage(buffer, 0, MessageHeaderEncoder.ENCODED_LENGTH);
     }
 
     @Override
     public void transfer(TransferBalanceCommand command) {
-        transferAccountCommandEncoder.wrapAndApplyHeader(buffer, 0, messageHeaderEncoder);
-        transferAccountCommandEncoder.correlationId(command.getCorrelationId());
-        transferAccountCommandEncoder.fromAccountId(command.getFromAccountId());
-        transferAccountCommandEncoder.toAccountId(command.getToAccountId());
-        transferAccountCommandEncoder.amount(command.getAmount());
+        transferAccountCommandBufferEncoder.wrapAndApplyHeader(buffer, 0, messageHeaderEncoder);
+        transferAccountCommandBufferEncoder.correlationId(command.getCorrelationId());
+        transferAccountCommandBufferEncoder.fromAccountId(command.getFromAccountId());
+        transferAccountCommandBufferEncoder.toAccountId(command.getToAccountId());
+        transferAccountCommandBufferEncoder.amount(command.getAmount());
         offerRingBufferMessage(buffer, 0, MessageHeaderEncoder.ENCODED_LENGTH);
     }
 

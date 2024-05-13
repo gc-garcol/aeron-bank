@@ -86,9 +86,7 @@
     <sbe:message name="CreateAccountCommand"
                  id="100"
                  description="Add a new account">
-        <field name="accountId" id="1" type="int64"/>
-        <field name="correlationId" id="2" type="uuidString"/>
-        <data name="name" id="3" type="varUtf8Encoding"/>
+        <field name="correlationId" id="1" type="uuidString"/>
     </sbe:message>
 
     <sbe:message name="CreateAccountResult"
@@ -120,7 +118,7 @@
     <!-- COMMAND-WITHDRAW -->
     <sbe:message name="WithdrawAccountCommand"
                  id="300"
-                 description="Add a new account">
+                 description="Withdraw">
         <field name="accountId" id="1" type="int64"/>
         <field name="correlationId" id="2" type="uuidString"/>
         <field name="amount" id="3" type="int64"/>
@@ -128,7 +126,7 @@
 
     <sbe:message name="WithdrawAccountResult"
                  id="301"
-                 description="Result from an DepositAccount, sent to the creator">
+                 description="Result from an WithdrawAccount, sent to the creator">
         <field name="correlationId" id="1" type="uuidString"/>
         <field name="accountId" id="2" type="int64"/>
         <field name="withdrawAmount" id="3" type="int64"/>
@@ -138,7 +136,7 @@
     <!-- COMMAND-TRANSFER -->
     <sbe:message name="TransferAccountCommand"
                  id="400"
-                 description="Add a new account">
+                 description="Transfer money">
         <field name="fromAccountId" id="1" type="int64"/>
         <field name="toAccountId" id="2" type="int64"/>
         <field name="amount" id="3" type="int64"/>
@@ -146,7 +144,7 @@
     </sbe:message>
     <sbe:message name="TransferAccountResult"
                  id="401"
-                 description="Result from an DepositAccount, sent to the creator">
+                 description="Result from an TransferAccount, sent to the creator">
         <field name="correlationId" id="1" type="uuidString"/>
         <field name="fromAccountId" id="2" type="int64"/>
         <field name="toAccountId" id="3" type="int64"/>
@@ -155,14 +153,14 @@
     </sbe:message>
     <sbe:message name="SourceAccountTransferredEvent"
       id="402"
-      description="Result from an DepositAccount, sent to the creator">
+      description="SourceAccountTransferredEvent">
         <field name="fromAccountId" id="1" type="int64"/>
         <field name="toAccountId" id="2" type="int64"/>
         <field name="transferredAmount" id="3" type="int64"/>
     </sbe:message>
     <sbe:message name="DestinationAccountTransferredEvent"
       id="403"
-      description="Result from an DepositAccount, sent to the receiver">
+      description="DestinationAccountTransferredEvent">
         <field name="fromAccountId" id="1" type="int64"/>
         <field name="toAccountId" id="2" type="int64"/>
         <field name="transferredAmount" id="3" type="int64"/>
@@ -171,13 +169,13 @@
     <!-- COMMAND-CLOSE -->
     <sbe:message name="CloseAccountCommand"
                  id="500"
-                 description="Add a new account">
+                 description="Close account">
         <field name="accountId" id="1" type="int64"/>
         <field name="correlationId" id="2" type="uuidString"/>
     </sbe:message>
     <sbe:message name="CloseAccountResult"
                  id="501"
-                 description="Result from an DepositAccount, sent to the creator">
+                 description="Result from an CloseAccount, sent to the creator">
         <field name="correlationId" id="1" type="uuidString"/>
         <field name="result" id="2" type="CommandResult"/>
     </sbe:message>

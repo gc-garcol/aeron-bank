@@ -1,4 +1,4 @@
-package gc.garcol.bankapp.transport.api.account;
+package gc.garcol.bankapp.transport.api.account.command;
 
 import lombok.Data;
 
