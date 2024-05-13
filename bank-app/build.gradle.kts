@@ -32,11 +32,21 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
 }
 
+application {
+    mainClass.set("gc.garcol.bankapp.BankAppApplication")
+}
+
+sourceSets {
+    main {
+        java.srcDirs("src/main/java", generatedDir)
+    }
+}
+
 tasks {
     task("uberJar", Jar::class) {
         group = "uber"
         manifest {
-            attributes["Main-Class"] = "gc.garcol.cluster.ClusterApplication"
+            attributes["Main-Class"] = "gc.garcol.bankapp.BankAppApplication"
             attributes["Add-Opens"] = "java.base/sun.nio.ch"
         }
         archiveClassifier.set("uber")
@@ -48,23 +58,23 @@ tasks {
         })
     }
 
-    task("generateCodecs", JavaExec::class) {
-        group = "sbe"
-        val codecsFile = "src/main/resources/protocol/protocol-codecs.xml"
-        val sbeFile = "src/main/resources/protocol/fpl/sbe.xsd"
-        inputs.files(codecsFile, sbeFile)
-        outputs.dir(generatedDir)
-        classpath = codecGeneration
-        mainClass.set("uk.co.real_logic.sbe.SbeTool")
-        args = listOf(codecsFile)
-        systemProperties["sbe.output.dir"] = generatedDir
-        systemProperties["sbe.target.language"] = "Java"
-        systemProperties["sbe.validation.xsd"] = sbeFile
-        systemProperties["sbe.validation.stop.on.error"] = "true"
-        outputs.dir(generatedDir)
-    }
-
-    compileJava {
-        dependsOn("generateCodecs")
-    }
+//    task("generateCodecs", JavaExec::class) {
+//        group = "sbe"
+//        val codecsFile = "src/main/resources/protocol/protocol-codecs.xml"
+//        val sbeFile = "src/main/resources/protocol/fpl/sbe.xsd"
+//        inputs.files(codecsFile, sbeFile)
+//        outputs.dir(generatedDir)
+//        classpath = codecGeneration
+//        mainClass.set("uk.co.real_logic.sbe.SbeTool")
+//        args = listOf(codecsFile)
+//        systemProperties["sbe.output.dir"] = generatedDir
+//        systemProperties["sbe.target.language"] = "Java"
+//        systemProperties["sbe.validation.xsd"] = sbeFile
+//        systemProperties["sbe.validation.stop.on.error"] = "true"
+//        outputs.dir(generatedDir)
+//    }
+//
+//    compileJava {
+//        dependsOn("generateCodecs")
+//    }
 }

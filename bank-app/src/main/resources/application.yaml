@@ -1,1 +1,4 @@
-spring.application.name=bank-app
+spring.application.name: bank-app
+server:
+  port: 8000
+
