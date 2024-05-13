@@ -36,7 +36,7 @@ public class Accounts implements AccountUseCase, AccountRestorable {
     public void openAccount(String correlationId, long accountId) {
         if (accounts.containsKey(accountId)) {
             LOGGER.warn("Account {} already exists", accountId);
-            accountClusterClientResponder.rejectAddAccount(correlationId, AccountResponseCode.ACCOUNT_ALREADY_EXISTS);
+            accountClusterClientResponder.rejectCreateAccount(correlationId, AccountResponseCode.ACCOUNT_ALREADY_EXISTS);
             throw new Bank4xxException(String.format("Account %s already exists", accountId));
         }
         accounts.put(accountId, new Account(accountId));

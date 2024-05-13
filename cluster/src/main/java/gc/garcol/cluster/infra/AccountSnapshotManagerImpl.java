@@ -2,7 +2,6 @@ package gc.garcol.cluster.infra;
 
 import gc.garcol.cluster.domain.SessionMessageContext;
 import gc.garcol.cluster.domain.account.Accounts;
-import gc.garcol.common.core.SnapshotManager;
 import gc.garcol.protocol.*;
 import io.aeron.ExclusivePublication;
 import io.aeron.Image;
@@ -11,7 +10,6 @@ import io.aeron.logbuffer.Header;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.agrona.DirectBuffer;
-import org.agrona.ExpandableDirectByteBuffer;
 import org.agrona.concurrent.IdleStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +21,8 @@ import java.util.Objects;
  * @since 2024
  */
 @RequiredArgsConstructor
-public class SnapshotManagerImpl implements SnapshotManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SnapshotManagerImpl.class);
+public class AccountSnapshotManagerImpl extends AccountSnapshotManagerAbstract {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountSnapshotManagerImpl.class);
     private static final int RETRY_COUNT = 3;
 
     // Inject session
@@ -34,16 +32,6 @@ public class SnapshotManagerImpl implements SnapshotManager {
     @Setter
     private IdleStrategy idleStrategy;
     private boolean snapshotFullyLoaded = false;
-
-    private final ExpandableDirectByteBuffer buffer = new ExpandableDirectByteBuffer(1 << 10);
-    private final MessageHeaderDecoder headerDecoder = new MessageHeaderDecoder();
-    private final MessageHeaderEncoder headerEncoder = new MessageHeaderEncoder();
-
-    private final AccountSnapshotEncoder accountSnapshotEncoder = new AccountSnapshotEncoder();
-    private final AccountSnapshotDecoder accountSnapshotDecoder = new AccountSnapshotDecoder();
-    private final AccountIdSnapshotDecoder accountIdSnapshotDecoder = new AccountIdSnapshotDecoder();
-    private final AccountIdSnapshotEncoder accountIdSnapshotEncoder = new AccountIdSnapshotEncoder();
-    private final EndOfSnapshotEncoder endOfSnapshotEncoder = new EndOfSnapshotEncoder();
 
     @Override
     public void onFragment(DirectBuffer buffer, int offset, int length, Header header) {
@@ -152,7 +140,8 @@ public class SnapshotManagerImpl implements SnapshotManager {
         LOGGER.error("failed to offer snapshot within {} retries", RETRY_COUNT);
     }
 
-    private void onAccountSnapshot(final DirectBuffer buffer, final int offset, final int length) {
+    @Override
+    public void onAccountSnapshot(final DirectBuffer buffer, final int offset, final int length) {
         accountSnapshotDecoder.wrapAndApplyHeader(buffer, offset, headerDecoder);
         final long id = accountSnapshotDecoder.id();
         final long amount = accountSnapshotDecoder.amount();
@@ -160,13 +149,15 @@ public class SnapshotManagerImpl implements SnapshotManager {
         accounts.restoreAccount(id, amount, active);
     }
 
-    private void onAccountIdGeneratorSnapshot(final DirectBuffer buffer, final int offset, final int length) {
+    @Override
+    public void onAccountIdGeneratorSnapshot(final DirectBuffer buffer, final int offset, final int length) {
         accountIdSnapshotDecoder.wrapAndApplyHeader(buffer, offset, headerDecoder);
         final long lastId = accountIdSnapshotDecoder.lastId();
         accounts.restoreAutoIdGenerator(lastId);
     }
 
-    private void onEndOfSnapshot(final DirectBuffer buffer, final int offset, final int length) {
+    @Override
+    public void onEndOfSnapshot(final DirectBuffer buffer, final int offset, final int length) {
         snapshotFullyLoaded = true;
     }
 

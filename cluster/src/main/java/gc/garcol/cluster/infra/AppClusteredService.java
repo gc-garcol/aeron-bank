@@ -56,6 +56,7 @@ public class AppClusteredService implements ClusteredService {
 
     @Override
     public void onSessionClose(ClientSession session, long timestamp, CloseReason closeReason) {
+        LOGGER.info("Client session closed");
         context.setClusterTime(timestamp);
         clientSessions.removeSession(session);
     }
@@ -63,18 +64,21 @@ public class AppClusteredService implements ClusteredService {
     @Override
     public void onSessionMessage(ClientSession session, long timestamp, DirectBuffer buffer,
                                  int offset, int length, Header header) {
+        LOGGER.info("Client session message");
         context.setSessionContext(session, timestamp);
         sbeCommandDispatcher.dispatch(buffer, offset, length);
     }
 
     @Override
     public void onTimerEvent(long correlationId, long timestamp) {
+        LOGGER.info("Timer event");
         context.setClusterTime(timestamp);
         timerManager.onTimerEvent(correlationId, timestamp);
     }
 
     @Override
     public void onTakeSnapshot(ExclusivePublication snapshotPublication) {
+        LOGGER.info("Take snapshot");
         snapshotManager.takeSnapshot(snapshotPublication);
     }
 

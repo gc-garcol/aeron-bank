@@ -5,7 +5,7 @@ import gc.garcol.cluster.domain.account.AccountClusterClientResponder;
 import gc.garcol.cluster.domain.account.Accounts;
 import gc.garcol.cluster.infra.AppClusteredService;
 import gc.garcol.cluster.infra.ClientSessionsImpl;
-import gc.garcol.cluster.infra.SnapshotManagerImpl;
+import gc.garcol.cluster.infra.AccountSnapshotManagerImpl;
 import gc.garcol.cluster.infra.adapter.domain.AccountClusterClientResponderAdapter;
 import gc.garcol.cluster.infra.adapter.domain.SessionMessageContextAdapter;
 import gc.garcol.cluster.infra.adapter.domain.TimerManagerAdapter;
@@ -53,7 +53,7 @@ public class AppConfiguration {
 
     @Bean
     public SnapshotManager snapshotManager(final Accounts accounts, final SessionMessageContextAdapter context) {
-        return new SnapshotManagerImpl(accounts, context);
+        return new AccountSnapshotManagerImpl(accounts, context);
     }
 
     @Bean

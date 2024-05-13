@@ -1,7 +1,6 @@
 package gc.garcol.cluster.infra;
 
 import gc.garcol.cluster.domain.account.Accounts;
-import gc.garcol.protocol.*;
 import lombok.RequiredArgsConstructor;
 import org.agrona.DirectBuffer;
 
@@ -10,19 +9,13 @@ import org.agrona.DirectBuffer;
  * @since 2024
  */
 @RequiredArgsConstructor
-public class AccountCommandHandlerImpl implements AccountCommandHandler {
+public class AccountCommandHandlerImpl extends AccountCommandHandlerAbstract {
     private final Accounts accounts;
 
-    private final MessageHeaderDecoder messageHeaderDecoder = new MessageHeaderDecoder();
-    private final WithdrawAccountCommandDecoder withdrawAccountCommandDecoder = new WithdrawAccountCommandDecoder();
-    private final DepositAccountCommandDecoder depositAccountCommandDecoder = new DepositAccountCommandDecoder();
-    private final AddAccountCommandDecoder addAccountCommandDecoder = new AddAccountCommandDecoder();
-    private final TransferAccountCommandDecoder transferAccountCommandDecoder = new TransferAccountCommandDecoder();
-
     @Override
-    public void addAccountCommandHandler(DirectBuffer buffer, int offset) {
-        addAccountCommandDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
-        accounts.openAccount(addAccountCommandDecoder.correlationId(), addAccountCommandDecoder.accountId());
+    public void createAccountCommandHandler(DirectBuffer buffer, int offset) {
+        createAccountCommandDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
+        accounts.openAccount(createAccountCommandDecoder.correlationId(), createAccountCommandDecoder.accountId());
     }
 
     @Override

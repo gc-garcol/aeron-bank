@@ -68,7 +68,7 @@
 
     <!-- COMMAND -->
     <!-- COMMAND-ADD -->
-    <sbe:message name="AddAccountCommand"
+    <sbe:message name="CreateAccountCommand"
                  id="100"
                  description="Add a new account">
         <field name="accountId" id="1" type="int64"/>
@@ -76,11 +76,11 @@
         <data name="name" id="3" type="varUtf8Encoding"/>
     </sbe:message>
 
-    <sbe:message name="AddAccountResult"
+    <sbe:message name="CreateAccountResult"
                  id="101"
-                 description="Result from an AddAccount, sent to the creator">
-        <field name="accountId" id="1" type="int64"/>
-        <field name="correlationId" id="2" type="uuidString"/>
+                 description="Result from an CreateAccount, sent to the creator">
+        <field name="correlationId" id="1" type="uuidString"/>
+        <field name="accountId" id="2" type="int64"/>
         <field name="result" id="3" type="CommandResult"/>
     </sbe:message>
 
@@ -89,7 +89,7 @@
                  id="200"
                  description="Add a new account">
         <field name="accountId" id="1" type="int64"/>
-        <field name="amount" id="2" type="amount"/>
+        <field name="amount" id="2" type="int64"/>
         <field name="correlationId" id="3" type="uuidString"/>
     </sbe:message>
 
@@ -97,7 +97,9 @@
                  id="201"
                  description="Result from an DepositAccount, sent to the creator">
         <field name="correlationId" id="1" type="uuidString"/>
-        <field name="result" id="2" type="CommandResult"/>
+        <field name="accountId" id="2" type="int64"/>
+        <field name="depositAmount" id="3" type="int64"/>
+        <field name="result" id="4" type="CommandResult"/>
     </sbe:message>
 
     <!-- COMMAND-WITHDRAW -->
@@ -105,15 +107,17 @@
                  id="300"
                  description="Add a new account">
         <field name="accountId" id="1" type="int64"/>
-        <field name="amount" id="2" type="amount"/>
-        <field name="correlationId" id="3" type="uuidString"/>
+        <field name="correlationId" id="2" type="uuidString"/>
+        <field name="amount" id="3" type="int64"/>
     </sbe:message>
 
     <sbe:message name="WithdrawAccountResult"
                  id="301"
                  description="Result from an DepositAccount, sent to the creator">
         <field name="correlationId" id="1" type="uuidString"/>
-        <field name="result" id="2" type="CommandResult"/>
+        <field name="accountId" id="2" type="int64"/>
+        <field name="withdrawAmount" id="3" type="int64"/>
+        <field name="result" id="4" type="CommandResult"/>
     </sbe:message>
 
     <!-- COMMAND-TRANSFER -->
@@ -129,7 +133,24 @@
                  id="401"
                  description="Result from an DepositAccount, sent to the creator">
         <field name="correlationId" id="1" type="uuidString"/>
-        <field name="result" id="2" type="CommandResult"/>
+        <field name="fromAccountId" id="2" type="int64"/>
+        <field name="toAccountId" id="3" type="int64"/>
+        <field name="transferredAmount" id="4" type="int64"/>
+        <field name="result" id="5" type="CommandResult"/>
+    </sbe:message>
+    <sbe:message name="SourceAccountTransferredEvent"
+      id="402"
+      description="Result from an DepositAccount, sent to the creator">
+        <field name="fromAccountId" id="1" type="int64"/>
+        <field name="toAccountId" id="2" type="int64"/>
+        <field name="transferredAmount" id="3" type="int64"/>
+    </sbe:message>
+    <sbe:message name="DestinationAccountTransferredEvent"
+      id="403"
+      description="Result from an DepositAccount, sent to the receiver">
+        <field name="fromAccountId" id="1" type="int64"/>
+        <field name="toAccountId" id="2" type="int64"/>
+        <field name="transferredAmount" id="3" type="int64"/>
     </sbe:message>
 
     <!-- COMMAND-CLOSE -->
