@@ -1,4 +1,4 @@
-package gc.garcol.bankapp.transport.api.account;
+package gc.garcol.bankapp.transport.api.account.command;
 
 import gc.garcol.bankapp.service.AccountCommandDispatcherImpl;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/account")
 @RequiredArgsConstructor
-public class AccountResource {
+public class AccountCommandResource {
 
     private final AccountCommandDispatcherImpl accountCommandInboundService;
 

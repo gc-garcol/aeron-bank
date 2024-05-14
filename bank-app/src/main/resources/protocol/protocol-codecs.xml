@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sbe:messageSchema xmlns:sbe="http://fixprotocol.io/2016/sbe"
+                   package="gc.garcol.protocol"
+                   id="101"
+                   version="1"
+                   semanticVersion="1"
+                   description="Message Codecs for communicating with Bank Cluster.">
+    <types>
+        <composite name="messageHeader" description="Message identifiers and length of message root.">
+            <type name="blockLength" primitiveType="uint16"/>
+            <type name="templateId" primitiveType="uint16"/>
+            <type name="schemaId" primitiveType="uint16"/>
+            <type name="version" primitiveType="uint16"/>
+        </composite>
+        <composite name="groupSizeEncoding" description="Repeating group dimensions.">
+            <type name="blockLength" primitiveType="uint16"/>
+            <type name="numInGroup" primitiveType="uint16"/>
+        </composite>
+        <composite name="varAsciiEncoding" description="Variable length ASCII string.">
+            <type name="length" primitiveType="uint32" maxValue="1073741824"/>
+            <type name="varData" primitiveType="uint8" length="0" characterEncoding="US-ASCII"/>
+        </composite>
+        <composite name="varUtf8Encoding" description="Variable length UTF8 string.">
+            <type name="length" primitiveType="uint32" maxValue="1073741824"/>
+            <type name="varData" primitiveType="uint8" length="0" characterEncoding="UTF-8"/>
+        </composite>
+        <enum name="BooleanType" encodingType="int32">
+            <validValue name="FALSE">0</validValue>
+            <validValue name="TRUE">1</validValue>
+        </enum>
+        <enum name="AccountStatus" encodingType="int32">
+            <validValue name="OPEN">0</validValue>
+            <validValue name="CLOSED">1</validValue>
+            <validValue name="UNKNOWN">2</validValue>
+        </enum>
+        <enum name="CommandResult" encodingType="int32">
+            <validValue name="SUCCESS">0</validValue>
+            <validValue name="FAIL">1</validValue>
+            <validValue name="INVALID_DEPOSIT_AMOUNT">2</validValue>
+            <validValue name="INVALID_WITHDRAW_AMOUNT">3</validValue>
+            <validValue name="ACCOUNT_NOT_FOUND">4</validValue>
+        </enum>
+        <type name="time" primitiveType="int64" description="Epoch time in milliseconds since 1 Jan 1970 UTC."/>
+        <type name="amount" primitiveType="int64" description="Amount in whole cents."/>
+        <type name="uuidString" primitiveType="char" length="36"
+              description="36 char UUID held within an ASCII string."/>
+    </types>
+    <sbe:message name="ConnectCluster"
+                 id="1"
+                 description="Connects the cluster">
+        <field name="baseport" id="1" type="int32"/>
+        <field name="port" id="2" type="int32"/>
+        <data name="clusterHosts" id="3" type="varUtf8Encoding"/>
+        <data name="localhostName" id="4" type="varUtf8Encoding"/>
+    </sbe:message>
+
+    <sbe:message name="DisconnectCluster"
+                 id="2"
+                 description="Disconnects the cluster">
+    </sbe:message>
+
+    <sbe:message name="CreateAccountCommandBuffer"
+                 id="100"
+                 description="Add a new account">
+        <field name="correlationId" id="1" type="uuidString"/>
+    </sbe:message>
+    <sbe:message name="DepositAccountCommandBuffer"
+                 id="101"
+                 description="Add a new account">
+        <field name="accountId" id="1" type="int64"/>
+        <field name="amount" id="2" type="int64"/>
+        <field name="correlationId" id="3" type="uuidString"/>
+    </sbe:message>
+    <sbe:message name="WithdrawAccountCommandBuffer"
+                 id="102"
+                 description="Add a new account">
+        <field name="accountId" id="1" type="int64"/>
+        <field name="correlationId" id="2" type="uuidString"/>
+        <field name="amount" id="3" type="int64"/>
+    </sbe:message>
+    <sbe:message name="TransferAccountCommandBuffer"
+                 id="103"
+                 description="Add a new account">
+        <field name="fromAccountId" id="1" type="int64"/>
+        <field name="toAccountId" id="2" type="int64"/>
+        <field name="amount" id="3" type="int64"/>
+        <field name="correlationId" id="4" type="uuidString"/>
+    </sbe:message>
+</sbe:messageSchema>

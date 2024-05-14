@@ -1,9 +1,9 @@
 package gc.garcol.bankapp.service;
 
-import gc.garcol.bankapp.transport.api.account.CreateAccountCommand;
-import gc.garcol.bankapp.transport.api.account.DepositAccountCommand;
-import gc.garcol.bankapp.transport.api.account.TransferBalanceCommand;
-import gc.garcol.bankapp.transport.api.account.WithdrawAccountCommand;
+import gc.garcol.bankapp.transport.api.account.command.CreateAccountCommand;
+import gc.garcol.bankapp.transport.api.account.command.DepositAccountCommand;
+import gc.garcol.bankapp.transport.api.account.command.TransferBalanceCommand;
+import gc.garcol.bankapp.transport.api.account.command.WithdrawAccountCommand;
 
 /**
  * @author thaivc
