@@ -1,10 +1,7 @@
 package gc.garcol.bankapp.transport.api.account.command;
 
-import lombok.Data;
+import gc.garcol.bankapp.transport.BaseCommand;
 
-import java.util.UUID;
 
-@Data
-public class CreateAccountCommand {
-    private final String correlationId = UUID.randomUUID().toString();
+public class CreateAccountCommand extends BaseCommand {
 }
