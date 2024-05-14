@@ -15,7 +15,7 @@ public class AccountCommandHandlerImpl extends AccountCommandHandlerAbstract {
     @Override
     public void createAccountCommandHandler(DirectBuffer buffer, int offset) {
         createAccountCommandDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
-        accounts.openAccount(createAccountCommandDecoder.correlationId(), createAccountCommandDecoder.accountId());
+        accounts.openAccount(createAccountCommandDecoder.correlationId());
     }
 
     @Override

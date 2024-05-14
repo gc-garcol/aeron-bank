@@ -33,12 +33,8 @@ public class Accounts implements AccountUseCase, AccountRestorable {
     private final TimerManager timerManager;
 
     @Override
-    public void openAccount(String correlationId, long accountId) {
-        if (accounts.containsKey(accountId)) {
-            LOGGER.warn("Account {} already exists", accountId);
-            accountClusterClientResponder.rejectCreateAccount(correlationId, AccountResponseCode.ACCOUNT_ALREADY_EXISTS);
-            throw new Bank4xxException(String.format("Account %s already exists", accountId));
-        }
+    public void openAccount(String correlationId) {
+        long accountId = idGenerator.getAndIncrement();
         accounts.put(accountId, new Account(accountId));
         accountClusterClientResponder.onAccountAdded(
             correlationId, accountId, AccountResponseCode.ADD_ACCOUNT_SUCCESS
