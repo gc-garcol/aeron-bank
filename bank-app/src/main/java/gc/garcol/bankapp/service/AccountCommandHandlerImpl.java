@@ -1,37 +1,59 @@
 package gc.garcol.bankapp.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
-import org.springframework.stereotype.Service;
 
 /**
  * @author thaivc
  * @since 2024
  */
-@Service
-public class AccountCommandHandlerImpl extends AccountCommandHandlerAbstract {
+@Slf4j
+public class AccountCommandHandlerImpl
+    extends AccountCommandHandlerAbstract implements CommandBufferChannel
+{
 
-    protected AccountCommandHandlerImpl(OneToOneRingBuffer commandBuffer) {
+    public AccountCommandHandlerImpl(OneToOneRingBuffer commandBuffer) {
         super(commandBuffer);
     }
 
     @Override
-    public void processCreateAccountCommand(MutableDirectBuffer buffer, int offset) {
+    public void sendToClusterCreateAccountCommand(MutableDirectBuffer buffer, int offset) {
+        createAccountCommandBufferDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
+
+        createAccountCommandEncoder.wrapAndApplyHeader(buffer, offset, messageHeaderEncoder);
+        createAccountCommandEncoder.correlationId(createAccountCommandBufferDecoder.correlationId());
     }
 
     @Override
-    public void processDepositAccountCommand(MutableDirectBuffer buffer, int offset) {
+    public void sendToClusterDepositAccountCommand(MutableDirectBuffer buffer, int offset) {
+        depositAccountCommandBufferDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
 
+        depositAccountCommandEncoder.wrapAndApplyHeader(buffer, offset, messageHeaderEncoder);
+        depositAccountCommandEncoder.correlationId(depositAccountCommandBufferDecoder.correlationId());
+        depositAccountCommandEncoder.accountId(depositAccountCommandBufferDecoder.accountId());
+        depositAccountCommandEncoder.amount(depositAccountCommandBufferDecoder.amount());
     }
 
     @Override
-    public void processWithdrawAccountCommand(MutableDirectBuffer buffer, int offset) {
+    public void sendToClusterWithdrawAccountCommand(MutableDirectBuffer buffer, int offset) {
+        withdrawAccountCommandBufferDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
 
+        withdrawAccountCommandEncoder.wrapAndApplyHeader(buffer, offset, messageHeaderEncoder);
+        withdrawAccountCommandEncoder.correlationId(withdrawAccountCommandBufferDecoder.correlationId());
+        withdrawAccountCommandEncoder.accountId(withdrawAccountCommandBufferDecoder.accountId());
+        withdrawAccountCommandEncoder.amount(withdrawAccountCommandBufferDecoder.amount());
     }
 
     @Override
-    public void processTransferBalanceCommand(MutableDirectBuffer buffer, int offset) {
+    public void sendToClusterTransferBalanceCommand(MutableDirectBuffer buffer, int offset) {
+        transferAccountCommandBufferDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
 
+        transferAccountCommandEncoder.wrapAndApplyHeader(buffer, offset, messageHeaderEncoder);
+        transferAccountCommandEncoder.correlationId(transferAccountCommandBufferDecoder.correlationId());
+        transferAccountCommandEncoder.fromAccountId(transferAccountCommandBufferDecoder.fromAccountId());
+        transferAccountCommandEncoder.toAccountId(transferAccountCommandBufferDecoder.toAccountId());
+        transferAccountCommandEncoder.amount(transferAccountCommandBufferDecoder.amount());
     }
 
     @Override

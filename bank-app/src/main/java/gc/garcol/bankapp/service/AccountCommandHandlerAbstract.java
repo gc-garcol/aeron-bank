@@ -1,15 +1,26 @@
 package gc.garcol.bankapp.service;
 
-import gc.garcol.protocol.*;
+import gc.garcol.protocol.ConnectClusterDecoder;
+import gc.garcol.protocol.CreateAccountCommandBufferDecoder;
+import gc.garcol.protocol.CreateAccountCommandEncoder;
+import gc.garcol.protocol.DepositAccountCommandBufferDecoder;
+import gc.garcol.protocol.DepositAccountCommandEncoder;
+import gc.garcol.protocol.DisconnectClusterDecoder;
+import gc.garcol.protocol.MessageHeaderDecoder;
+import gc.garcol.protocol.MessageHeaderEncoder;
+import gc.garcol.protocol.TransferAccountCommandBufferDecoder;
+import gc.garcol.protocol.TransferAccountCommandEncoder;
+import gc.garcol.protocol.WithdrawAccountCommandBufferDecoder;
+import gc.garcol.protocol.WithdrawAccountCommandEncoder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.collections.Int2ObjectHashMap;
-import org.agrona.concurrent.Agent;
-import org.agrona.concurrent.MessageHandler;
 import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 
+@Slf4j
 public abstract class AccountCommandHandlerAbstract
-    implements Agent, MessageHandler, AccountCommandHandler, SystemCommandHandler, CommandBufferChannel {
+    implements AccountCommandHandler, SystemCommandHandler, CommandBufferChannel {
 
     private static final CommandBufferHandler DEFAULT_NOT_FOUND_HANDLER = (buffer, offset) -> {
         throw new IllegalArgumentException("Unknown message type");
@@ -23,10 +34,10 @@ public abstract class AccountCommandHandlerAbstract
         this.commandBuffer = commandBuffer;
         handlers.put(ConnectClusterDecoder.TEMPLATE_ID, this::processConnectCluster);
         handlers.put(DisconnectClusterDecoder.TEMPLATE_ID, this::processDisconnectCluster);
-        handlers.put(CreateAccountCommandBufferDecoder.TEMPLATE_ID, this::processCreateAccountCommand);
-        handlers.put(DepositAccountCommandBufferDecoder.TEMPLATE_ID, this::processDepositAccountCommand);
-        handlers.put(WithdrawAccountCommandBufferDecoder.TEMPLATE_ID, this::processWithdrawAccountCommand);
-        handlers.put(TransferAccountCommandBufferDecoder.TEMPLATE_ID, this::processTransferBalanceCommand);
+        handlers.put(CreateAccountCommandBufferDecoder.TEMPLATE_ID, this::sendToClusterCreateAccountCommand);
+        handlers.put(DepositAccountCommandBufferDecoder.TEMPLATE_ID, this::sendToClusterDepositAccountCommand);
+        handlers.put(WithdrawAccountCommandBufferDecoder.TEMPLATE_ID, this::sendToClusterWithdrawAccountCommand);
+        handlers.put(TransferAccountCommandBufferDecoder.TEMPLATE_ID, this::sendToClusterTransferBalanceCommand);
     }
 
     protected final ConnectClusterDecoder connectClusterDecoder = new ConnectClusterDecoder();
@@ -53,16 +64,23 @@ public abstract class AccountCommandHandlerAbstract
     @Override
     public void onMessage(int msgTypeId, MutableDirectBuffer buffer, int offset, int length) {
         messageHeaderDecoder.wrap(buffer, offset);
-        handlers.getOrDefault(messageHeaderDecoder.templateId() ,DEFAULT_NOT_FOUND_HANDLER).process(buffer, offset);
+
+        log.info("Received message with templateId={}", messageHeaderDecoder.templateId());
+        handlers.getOrDefault(
+            messageHeaderDecoder.templateId(),
+            DEFAULT_NOT_FOUND_HANDLER
+        ).process(buffer, offset);
     }
 
     @Override
     public int doWork() throws Exception {
+        //poll inbound to this agent messages (from the REPL)
+        commandBuffer.read(this);
         return 0;
     }
 
     @Override
     public String roleName() {
-        return null;
+        return "account-agent";
     }
 }

@@ -1,4 +1,8 @@
 spring.application.name: bank-app
 server:
   port: 8000
-
+---
+logging:
+  level:
+    root: INFO
+    'gc.garcol.bankapp': DEBUG

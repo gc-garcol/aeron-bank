@@ -5,7 +5,7 @@ package gc.garcol.cluster.domain.account;
  * @since 2024
  */
 public interface AccountUseCase {
-    void openAccount(String correlationId, long accountId);
+    void openAccount(String correlationId);
 
     void withdraw(String correlationId, long accountId, long amount);
 
