@@ -12,4 +12,8 @@ public interface CommandBufferHandler extends BiConsumer<MutableDirectBuffer, In
     default void process(MutableDirectBuffer buffer, int offset) {
         accept(buffer, offset);
     }
+
+    CommandBufferHandler DEFAULT_NOT_FOUND_HANDLER = (buffer, offset) -> {
+        throw new IllegalArgumentException("Unknown message type");
+    };
 }

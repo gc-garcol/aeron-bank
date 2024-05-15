@@ -1,47 +1,24 @@
 package gc.garcol.bankapp.service;
 
-import gc.garcol.protocol.ConnectClusterDecoder;
-import gc.garcol.protocol.CreateAccountCommandBufferDecoder;
-import gc.garcol.protocol.CreateAccountCommandEncoder;
-import gc.garcol.protocol.DepositAccountCommandBufferDecoder;
-import gc.garcol.protocol.DepositAccountCommandEncoder;
-import gc.garcol.protocol.DisconnectClusterDecoder;
-import gc.garcol.protocol.MessageHeaderDecoder;
-import gc.garcol.protocol.MessageHeaderEncoder;
-import gc.garcol.protocol.TransferAccountCommandBufferDecoder;
-import gc.garcol.protocol.TransferAccountCommandEncoder;
-import gc.garcol.protocol.WithdrawAccountCommandBufferDecoder;
-import gc.garcol.protocol.WithdrawAccountCommandEncoder;
+import gc.garcol.protocol.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.collections.Int2ObjectHashMap;
 import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 
+import static gc.garcol.bankapp.service.CommandBufferHandler.DEFAULT_NOT_FOUND_HANDLER;
+
 @Slf4j
+@RequiredArgsConstructor
 public abstract class AccountCommandHandlerAbstract
     implements AccountCommandHandler, SystemCommandHandler, CommandBufferChannel {
 
-    private static final CommandBufferHandler DEFAULT_NOT_FOUND_HANDLER = (buffer, offset) -> {
-        throw new IllegalArgumentException("Unknown message type");
-    };
-
     @Getter
     protected final OneToOneRingBuffer commandBuffer;
+
     protected final Int2ObjectHashMap<CommandBufferHandler> handlers = new Int2ObjectHashMap<>();
-
-    protected AccountCommandHandlerAbstract(OneToOneRingBuffer commandBuffer) {
-        this.commandBuffer = commandBuffer;
-        handlers.put(ConnectClusterDecoder.TEMPLATE_ID, this::processConnectCluster);
-        handlers.put(DisconnectClusterDecoder.TEMPLATE_ID, this::processDisconnectCluster);
-        handlers.put(CreateAccountCommandBufferDecoder.TEMPLATE_ID, this::sendToClusterCreateAccountCommand);
-        handlers.put(DepositAccountCommandBufferDecoder.TEMPLATE_ID, this::sendToClusterDepositAccountCommand);
-        handlers.put(WithdrawAccountCommandBufferDecoder.TEMPLATE_ID, this::sendToClusterWithdrawAccountCommand);
-        handlers.put(TransferAccountCommandBufferDecoder.TEMPLATE_ID, this::sendToClusterTransferBalanceCommand);
-    }
-
-    protected final ConnectClusterDecoder connectClusterDecoder = new ConnectClusterDecoder();
-    protected final DisconnectClusterDecoder disconnectClusterDecoder = new DisconnectClusterDecoder();
 
     // messages from commandBuffer, sent by client
     protected final MessageHeaderDecoder messageHeaderDecoder = new MessageHeaderDecoder();
