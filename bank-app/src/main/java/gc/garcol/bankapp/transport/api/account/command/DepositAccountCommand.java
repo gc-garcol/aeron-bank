@@ -1,14 +1,10 @@
 package gc.garcol.bankapp.transport.api.account.command;
 
+import gc.garcol.bankapp.transport.BaseCommand;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Data
-public class DepositAccountCommand {
-
-    private final String correlationId = UUID.randomUUID().toString();
+public class DepositAccountCommand extends BaseCommand {
     private long accountId;
     private long amount;
-
 }
