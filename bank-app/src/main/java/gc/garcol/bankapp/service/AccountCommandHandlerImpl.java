@@ -3,7 +3,6 @@ package gc.garcol.bankapp.service;
 import gc.garcol.protocol.*;
 import lombok.extern.slf4j.Slf4j;
 import org.agrona.MutableDirectBuffer;
-import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 
 /**
  * @author thaivc
@@ -13,10 +12,6 @@ import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 public class AccountCommandHandlerImpl
     extends AccountCommandHandlerAbstract implements CommandBufferChannel
 {
-
-    public AccountCommandHandlerImpl(OneToOneRingBuffer commandBuffer) {
-        super(commandBuffer);
-    }
 
     {
         handlers.put(ConnectClusterDecoder.TEMPLATE_ID, this::processConnectCluster);

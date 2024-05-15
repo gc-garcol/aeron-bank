@@ -1,5 +1,7 @@
 package gc.garcol.bankapp.app;
 
+import gc.garcol.bankapp.service.AccountCommandDispatcher;
+import gc.garcol.bankapp.service.AccountCommandDispatcherImpl;
 import gc.garcol.bankapp.service.AccountCommandHandler;
 import gc.garcol.bankapp.service.AccountCommandHandlerImpl;
 import org.agrona.BufferUtil;
@@ -28,7 +30,16 @@ public class AccountConfiguration {
     }
 
     @Bean
+    public AccountCommandDispatcher accountCommandDispatcher(OneToOneRingBuffer commandBuffer) {
+        var accountCommandDispatcher = new AccountCommandDispatcherImpl();
+        accountCommandDispatcher.setCommandBuffer(commandBuffer);
+        return accountCommandDispatcher;
+    }
+
+    @Bean
     public AccountCommandHandler accountCommandHandler(OneToOneRingBuffer commandBuffer) {
-        return new AccountCommandHandlerImpl(commandBuffer);
+        var accountCommandHandler = new AccountCommandHandlerImpl();
+        accountCommandHandler.setCommandBuffer(commandBuffer);
+        return accountCommandHandler;
     }
 }

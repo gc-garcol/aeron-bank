@@ -7,5 +7,5 @@ import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
  * @since 2024
  */
 public interface CommandBufferChannel {
-    OneToOneRingBuffer getCommandBuffer();
+    void setCommandBuffer(OneToOneRingBuffer commandBuffer);
 }

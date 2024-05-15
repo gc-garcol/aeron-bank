@@ -1,8 +1,7 @@
 package gc.garcol.bankapp.service;
 
 import gc.garcol.protocol.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.collections.Int2ObjectHashMap;
@@ -11,12 +10,11 @@ import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 import static gc.garcol.bankapp.service.CommandBufferHandler.DEFAULT_NOT_FOUND_HANDLER;
 
 @Slf4j
-@RequiredArgsConstructor
 public abstract class AccountCommandHandlerAbstract
     implements AccountCommandHandler, SystemCommandHandler, CommandBufferChannel {
 
-    @Getter
-    protected final OneToOneRingBuffer commandBuffer;
+    @Setter
+    protected OneToOneRingBuffer commandBuffer;
 
     protected final Int2ObjectHashMap<CommandBufferHandler> handlers = new Int2ObjectHashMap<>();
 
