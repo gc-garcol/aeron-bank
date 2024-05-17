@@ -8,6 +8,11 @@
 ## Pre-requisites
 - `Java 21`
 
+## Project structure
+
+- `cluster` - Domain logic
+- `bank-app` - Client application that interacts with the cluster
+
 ## Run project
 ```shell
 ./gradlew
