@@ -1,5 +1,7 @@
 package gc.garcol.bankapp.app;
 
+import static org.agrona.concurrent.ringbuffer.RingBufferDescriptor.TRAILER_LENGTH;
+
 import gc.garcol.bankapp.service.AccountClusterEgressListener;
 import gc.garcol.bankapp.service.AccountCommandDispatcher;
 import gc.garcol.bankapp.service.AccountCommandDispatcherImpl;
@@ -12,8 +14,6 @@ import org.agrona.concurrent.UnsafeBuffer;
 import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static org.agrona.concurrent.ringbuffer.RingBufferDescriptor.TRAILER_LENGTH;
 
 @Configuration
 public class AccountConfiguration {
