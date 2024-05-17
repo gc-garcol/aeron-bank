@@ -1,17 +1,28 @@
 package gc.garcol.bankapp.service;
 
-import gc.garcol.protocol.*;
+import static gc.garcol.bankapp.service.CommandBufferHandler.DEFAULT_NOT_FOUND_HANDLER;
+
+import gc.garcol.protocol.ConnectClusterDecoder;
+import gc.garcol.protocol.CreateAccountCommandBufferDecoder;
+import gc.garcol.protocol.CreateAccountCommandEncoder;
+import gc.garcol.protocol.DepositAccountCommandBufferDecoder;
+import gc.garcol.protocol.DepositAccountCommandEncoder;
+import gc.garcol.protocol.DisconnectClusterDecoder;
+import gc.garcol.protocol.MessageHeaderDecoder;
+import gc.garcol.protocol.MessageHeaderEncoder;
+import gc.garcol.protocol.TransferAccountCommandBufferDecoder;
+import gc.garcol.protocol.TransferAccountCommandEncoder;
+import gc.garcol.protocol.WithdrawAccountCommandBufferDecoder;
+import gc.garcol.protocol.WithdrawAccountCommandEncoder;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.collections.Int2ObjectHashMap;
 import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 
-import static gc.garcol.bankapp.service.CommandBufferHandler.DEFAULT_NOT_FOUND_HANDLER;
-
 @Slf4j
-public abstract class AccountCommandHandlerAbstract
-    implements AccountCommandHandler, SystemCommandHandler, CommandBufferChannel {
+public abstract class AccountCommandHandlerAbstract extends SystemCommandHandlerAbstract
+    implements AccountCommandHandler, CommandBufferChannel {
 
     @Setter
     protected OneToOneRingBuffer commandBuffer;

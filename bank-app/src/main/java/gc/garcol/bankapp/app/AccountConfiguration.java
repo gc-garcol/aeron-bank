@@ -1,5 +1,6 @@
 package gc.garcol.bankapp.app;
 
+import gc.garcol.bankapp.service.AccountClusterEgressListener;
 import gc.garcol.bankapp.service.AccountCommandDispatcher;
 import gc.garcol.bankapp.service.AccountCommandDispatcherImpl;
 import gc.garcol.bankapp.service.AccountCommandHandler;
@@ -37,9 +38,13 @@ public class AccountConfiguration {
     }
 
     @Bean
-    public AccountCommandHandler accountCommandHandler(OneToOneRingBuffer commandBuffer) {
+    public AccountCommandHandler accountCommandHandler(
+        final OneToOneRingBuffer commandBuffer,
+        final AccountClusterEgressListener egressListener
+    ) {
         var accountCommandHandler = new AccountCommandHandlerImpl();
         accountCommandHandler.setCommandBuffer(commandBuffer);
+        accountCommandHandler.setEgressListener(egressListener);
         return accountCommandHandler;
     }
 }

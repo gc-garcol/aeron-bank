@@ -60,14 +60,4 @@ public class AccountCommandHandlerImpl
         transferAccountCommandEncoder.toAccountId(transferAccountCommandBufferDecoder.toAccountId());
         transferAccountCommandEncoder.amount(transferAccountCommandBufferDecoder.amount());
     }
-
-    @Override
-    public void processConnectCluster(MutableDirectBuffer buffer, int offset) {
-
-    }
-
-    @Override
-    public void processDisconnectCluster(MutableDirectBuffer buffer, int offset) {
-
-    }
 }

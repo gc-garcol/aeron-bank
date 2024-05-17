@@ -7,7 +7,9 @@ import io.aeron.cluster.codecs.EventCode;
 import io.aeron.cluster.codecs.MessageHeaderDecoder;
 import io.aeron.logbuffer.Header;
 import org.agrona.DirectBuffer;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AccountClusterEgressListener implements EgressListener {
 
     private final MessageHeaderDecoder messageHeaderDecoder = new MessageHeaderDecoder();
