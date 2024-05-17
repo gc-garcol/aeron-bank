@@ -5,7 +5,6 @@ import static org.agrona.concurrent.ringbuffer.RingBufferDescriptor.TRAILER_LENG
 import gc.garcol.bankapp.service.AccountClusterEgressListener;
 import gc.garcol.bankapp.service.AccountCommandDispatcher;
 import gc.garcol.bankapp.service.AccountCommandDispatcherImpl;
-import gc.garcol.bankapp.service.AccountCommandHandler;
 import gc.garcol.bankapp.service.AccountCommandHandlerImpl;
 import org.agrona.BufferUtil;
 import org.agrona.concurrent.IdleStrategy;
@@ -16,7 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AccountConfiguration {
+public class AccountDomainSetup {
 
     @Bean
     public IdleStrategy commandIdleStrategy() {
@@ -38,7 +37,7 @@ public class AccountConfiguration {
     }
 
     @Bean
-    public AccountCommandHandler accountCommandHandler(
+    public AccountCommandHandlerImpl accountCommandHandler(
         final OneToOneRingBuffer commandBuffer,
         final AccountClusterEgressListener egressListener
     ) {

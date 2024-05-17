@@ -48,6 +48,12 @@ public abstract class SystemCommandHandlerAbstract implements SystemCommandHandl
         log.info("Cluster disconnected");
     }
 
+    @Override
+    public void tryConnectToCluster(String clusterHosts, int clusterPort, String serverHost,
+        int serverPort) {
+
+    }
+
     private void connectCluster(
         final int basePort,
         final int port,
