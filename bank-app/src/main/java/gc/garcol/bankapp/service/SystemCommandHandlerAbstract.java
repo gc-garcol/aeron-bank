@@ -51,7 +51,14 @@ public abstract class SystemCommandHandlerAbstract implements SystemCommandHandl
     @Override
     public void tryConnectToCluster(String clusterHosts, int clusterPort, String serverHost,
         int serverPort) {
-
+        if (connectionState == ConnectionState.CONNECTED) {
+            log.info("Already connected to cluster");
+            return;
+        }
+        log.info("Connecting to cluster");
+        connectCluster(clusterPort, serverPort, clusterHosts, serverHost);
+        connectionState = ConnectionState.CONNECTED;
+        log.info("Connected to cluster");
     }
 
     private void connectCluster(
