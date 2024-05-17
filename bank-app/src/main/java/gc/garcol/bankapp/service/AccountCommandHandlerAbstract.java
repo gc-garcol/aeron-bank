@@ -2,6 +2,7 @@ package gc.garcol.bankapp.service;
 
 import static gc.garcol.bankapp.service.CommandBufferHandler.DEFAULT_NOT_FOUND_HANDLER;
 
+import gc.garcol.bankapp.service.constants.ConnectionState;
 import gc.garcol.protocol.ConnectClusterDecoder;
 import gc.garcol.protocol.CreateAccountCommandBufferDecoder;
 import gc.garcol.protocol.CreateAccountCommandEncoder;
@@ -18,11 +19,14 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.collections.Int2ObjectHashMap;
+import org.agrona.concurrent.SystemEpochClock;
 import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 
 @Slf4j
 public abstract class AccountCommandHandlerAbstract extends SystemCommandHandlerAbstract
     implements AccountCommandHandler, CommandBufferChannel {
+
+    private long lastHeartbeatTime = Long.MIN_VALUE;
 
     @Setter
     protected OneToOneRingBuffer commandBuffer;
@@ -51,7 +55,7 @@ public abstract class AccountCommandHandlerAbstract extends SystemCommandHandler
     public void onMessage(int msgTypeId, MutableDirectBuffer buffer, int offset, int length) {
         messageHeaderDecoder.wrap(buffer, offset);
 
-        log.info("Received message with templateId={}", messageHeaderDecoder.templateId());
+        log.debug("Received message with templateId={}", messageHeaderDecoder.templateId());
         handlers.getOrDefault(
             messageHeaderDecoder.templateId(),
             DEFAULT_NOT_FOUND_HANDLER
@@ -60,13 +64,38 @@ public abstract class AccountCommandHandlerAbstract extends SystemCommandHandler
 
     @Override
     public int doWork() throws Exception {
-        //poll inbound to this agent messages (from the REPL)
-        commandBuffer.read(this);
-        return 0;
+        sendClusterHeartbeat();
+        pollInboundMessages();
+        pollClusterMessages();
+        return noWorkAvailable();
     }
 
     @Override
     public String roleName() {
         return "account-agent";
+    }
+
+    private void sendClusterHeartbeat() {
+        final long now = SystemEpochClock.INSTANCE.time();
+        if (now >= lastHeartbeatTime + 250) {
+            lastHeartbeatTime = now;
+            if (connectionState == ConnectionState.CONNECTED) {
+                aeronCluster.sendKeepAlive();
+            }
+        }
+    }
+
+    private void pollInboundMessages() {
+        commandBuffer.read(this);
+    }
+
+    private void pollClusterMessages() {
+        if (null != aeronCluster && !aeronCluster.isClosed()) {
+            aeronCluster.pollEgress();
+        }
+    }
+
+    private int noWorkAvailable() {
+        return 0;
     }
 }

@@ -11,6 +11,7 @@ import io.aeron.driver.ThreadingMode;
 import io.aeron.samples.cluster.ClusterConfig;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.agrona.MutableDirectBuffer;
@@ -31,7 +32,8 @@ public abstract class SystemCommandHandlerAbstract implements SystemCommandHandl
 
     @Override
     public void processConnectCluster(MutableDirectBuffer buffer, int offset) {
-        assert egressListener != null;
+        Objects.requireNonNull(egressListener, "Egress listener is not set");
+
         connectClusterDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
         connectCluster(connectClusterDecoder.baseport(), connectClusterDecoder.port(),
             connectClusterDecoder.clusterHosts(), connectClusterDecoder.localhostName());
