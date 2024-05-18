@@ -29,8 +29,8 @@ import java.util.concurrent.TimeUnit;
 @Setter
 @Configuration
 @ConfigurationProperties(prefix = "aeron.cluster")
-public class AppBootstrap {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AppBootstrap.class);
+public class Bootstrap {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Bootstrap.class);
 
     private String hosts;
     private int node;

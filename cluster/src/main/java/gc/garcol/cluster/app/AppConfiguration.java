@@ -33,22 +33,8 @@ public class AppConfiguration {
     }
 
     @Bean
-    public AccountClusterClientResponder clusterClientResponder(final SessionMessageContextAdapter context) {
-        return new AccountClusterClientResponderAdapter(context);
-    }
-
-    @Bean
     public TimerManager timerManager(final SessionMessageContextAdapter context) {
         return new TimerManagerAdapter(context);
-    }
-
-    @Bean
-    public Accounts accounts(
-        final SessionMessageContextAdapter context,
-        final AccountClusterClientResponder accountClusterClientResponder,
-        final TimerManager timerManager
-    ) {
-        return new Accounts(context, accountClusterClientResponder, timerManager);
     }
 
     @Bean

@@ -7,18 +7,9 @@ import gc.garcol.bankapp.transport.api.account.command.TransferBalanceCommand;
 import gc.garcol.bankapp.transport.api.account.command.WithdrawAccountCommand;
 import gc.garcol.common.exception.Bank5xxException;
 import gc.garcol.protocol.MessageHeaderEncoder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.agrona.ExpandableArrayBuffer;
-import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
-import org.springframework.stereotype.Service;
 
-@Getter
-@Service
-@RequiredArgsConstructor
 public class AccountCommandDispatcherImpl extends AccountCommandDispatcherAbstract implements CommandBufferChannel {
-
-    private final OneToOneRingBuffer commandBuffer;
 
     @Override
     public void createAccount(CreateAccountCommand command) {

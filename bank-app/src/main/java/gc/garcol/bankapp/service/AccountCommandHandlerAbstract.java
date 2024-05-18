@@ -1,22 +1,35 @@
 package gc.garcol.bankapp.service;
 
-import gc.garcol.protocol.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import static gc.garcol.bankapp.service.CommandBufferHandler.DEFAULT_NOT_FOUND_HANDLER;
+
+import gc.garcol.bankapp.service.constants.ConnectionState;
+import gc.garcol.protocol.ConnectClusterDecoder;
+import gc.garcol.protocol.CreateAccountCommandBufferDecoder;
+import gc.garcol.protocol.CreateAccountCommandEncoder;
+import gc.garcol.protocol.DepositAccountCommandBufferDecoder;
+import gc.garcol.protocol.DepositAccountCommandEncoder;
+import gc.garcol.protocol.DisconnectClusterDecoder;
+import gc.garcol.protocol.MessageHeaderDecoder;
+import gc.garcol.protocol.MessageHeaderEncoder;
+import gc.garcol.protocol.TransferAccountCommandBufferDecoder;
+import gc.garcol.protocol.TransferAccountCommandEncoder;
+import gc.garcol.protocol.WithdrawAccountCommandBufferDecoder;
+import gc.garcol.protocol.WithdrawAccountCommandEncoder;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.agrona.MutableDirectBuffer;
 import org.agrona.collections.Int2ObjectHashMap;
+import org.agrona.concurrent.SystemEpochClock;
 import org.agrona.concurrent.ringbuffer.OneToOneRingBuffer;
 
-import static gc.garcol.bankapp.service.CommandBufferHandler.DEFAULT_NOT_FOUND_HANDLER;
-
 @Slf4j
-@RequiredArgsConstructor
-public abstract class AccountCommandHandlerAbstract
-    implements AccountCommandHandler, SystemCommandHandler, CommandBufferChannel {
+public abstract class AccountCommandHandlerAbstract extends SystemCommandHandlerAbstract
+    implements AccountCommandHandler, CommandBufferChannel {
 
-    @Getter
-    protected final OneToOneRingBuffer commandBuffer;
+    private long lastHeartbeatTime = Long.MIN_VALUE;
+
+    @Setter
+    protected OneToOneRingBuffer commandBuffer;
 
     protected final Int2ObjectHashMap<CommandBufferHandler> handlers = new Int2ObjectHashMap<>();
 
@@ -42,7 +55,7 @@ public abstract class AccountCommandHandlerAbstract
     public void onMessage(int msgTypeId, MutableDirectBuffer buffer, int offset, int length) {
         messageHeaderDecoder.wrap(buffer, offset);
 
-        log.info("Received message with templateId={}", messageHeaderDecoder.templateId());
+        log.debug("Received message with templateId={}", messageHeaderDecoder.templateId());
         handlers.getOrDefault(
             messageHeaderDecoder.templateId(),
             DEFAULT_NOT_FOUND_HANDLER
@@ -51,13 +64,38 @@ public abstract class AccountCommandHandlerAbstract
 
     @Override
     public int doWork() throws Exception {
-        //poll inbound to this agent messages (from the REPL)
-        commandBuffer.read(this);
-        return 0;
+        sendClusterHeartbeat();
+        pollInboundMessages();
+        pollClusterMessages();
+        return noWorkAvailable();
     }
 
     @Override
     public String roleName() {
         return "account-agent";
+    }
+
+    private void sendClusterHeartbeat() {
+        final long now = SystemEpochClock.INSTANCE.time();
+        if (now >= lastHeartbeatTime + 250) {
+            lastHeartbeatTime = now;
+            if (connectionState == ConnectionState.CONNECTED) {
+                aeronCluster.sendKeepAlive();
+            }
+        }
+    }
+
+    private void pollInboundMessages() {
+        commandBuffer.read(this);
+    }
+
+    private void pollClusterMessages() {
+        if (null != aeronCluster && !aeronCluster.isClosed()) {
+            aeronCluster.pollEgress();
+        }
+    }
+
+    private int noWorkAvailable() {
+        return 0;
     }
 }

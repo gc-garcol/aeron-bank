@@ -2,7 +2,7 @@ spring.application.name: cluster
 
 aeron:
   cluster:
-    hosts: ${CLUSTER_ADDRESSES:localhost,localhost,localhost}
+    hosts: ${CLUSTER_ADDRESSES:localhost} # separate by ','. Example: "127.0.0.1,127.0.0.2,127.0.0.3"
     port: ${CLUSTER_PORT_BASE:9000}
     node: ${CLUSTER_NODE:0}
     baseDir: ${BASE_DIR:./node0}
