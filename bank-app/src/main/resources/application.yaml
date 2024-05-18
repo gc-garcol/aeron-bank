@@ -1,4 +1,10 @@
 spring.application.name: bank-app
+---
+spring:
+  profiles:
+    include:
+      - consul
+---
 server:
   host: ${SERVER_HOST:localhost}
   port: ${SERVER_PORT:8000}

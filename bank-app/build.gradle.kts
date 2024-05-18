@@ -31,7 +31,15 @@ dependencies {
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
+    implementation("org.springframework.cloud:spring-cloud-starter-consul-discovery")
 }
+extra["springCloudVersion"] = "2023.0.1"
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
+}
+
 
 application {
     mainClass.set("gc.garcol.bankapp.BankAppApplication")

@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        instance-id: ${spring.application.name}:${random.value}
+        instanceZone: bank-app
+        tags: bank-service
+        health-check-critical-timeout: 60s
+        heartbeat:
+          enabled: true
+          use-actuator-health: false

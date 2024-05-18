@@ -13,14 +13,12 @@ java {
 repositories {
     mavenCentral()
 }
-
-extra["springCloudVersion"] = "2023.0.1"
-
 dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-gateway")
     implementation("org.springframework.cloud:spring-cloud-starter-consul-discovery")
 }
 
+extra["springCloudVersion"] = "2023.0.1"
 dependencyManagement {
     imports {
         mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
