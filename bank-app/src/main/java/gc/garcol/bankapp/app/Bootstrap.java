@@ -22,8 +22,13 @@ public class Bootstrap {
 
     @EventListener(ApplicationReadyEvent.class)
     public void start() {
-        startAccountRunner();
-        tryConnectCluster();
+        try {
+            startAccountRunner();
+            tryConnectCluster();
+        } catch (Exception e) {
+            log.error("CANNOT CONNECT TO CLUSTER", e);
+            System.exit(0);
+        }
     }
 
     private void startAccountRunner() {

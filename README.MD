@@ -12,6 +12,7 @@
 
 - `cluster` - Domain logic
 - `bank-app` - Client application that interacts with the cluster
+- `core` - Common libs
 
 ## Run project
 ```shell
@@ -30,8 +31,6 @@ docker-compose up &
 ## Run local
 ```shell
 ./gradlew runSingleNodeCluster --args='--aeron.cluster.port=9000 --aeron.cluster.node=0 --aeron.cluster.baseDir=node0'
-./gradlew runSingleNodeCluster --args='--aeron.cluster.port=9001 --aeron.cluster.node=1 --aeron.cluster.baseDir=node1'
-./gradlew runSingleNodeCluster --args='--aeron.cluster.port=9002 --aeron.cluster.node=2 --aeron.cluster.baseDir=node2'
 ```
 
 ## ISSUES

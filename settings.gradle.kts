@@ -1,6 +1,6 @@
 pluginManagement {
     // Include 'plugins build' to define convention plugins.
-    includeBuild("build-logic")
+    includeBuild("bank-libs/build-logic")
 }
 
 plugins {
@@ -8,6 +8,6 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
-include("common", "cluster-protocol", "cluster", "bank-app")
+include("bank-libs:common", "bank-libs:cluster-protocol", "bank-cluster", "bank-app")
 
 rootProject.name = "aeron-bank"

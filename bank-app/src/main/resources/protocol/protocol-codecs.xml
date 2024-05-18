@@ -45,14 +45,6 @@
         <type name="uuidString" primitiveType="char" length="36"
               description="36 char UUID held within an ASCII string."/>
     </types>
-    <sbe:message name="ConnectCluster"
-                 id="1"
-                 description="Connects the cluster">
-        <field name="baseport" id="1" type="int32"/>
-        <field name="port" id="2" type="int32"/>
-        <data name="clusterHosts" id="3" type="varUtf8Encoding"/>
-        <data name="localhostName" id="4" type="varUtf8Encoding"/>
-    </sbe:message>
 
     <sbe:message name="DisconnectCluster"
                  id="2"
