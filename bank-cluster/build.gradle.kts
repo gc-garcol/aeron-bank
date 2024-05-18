@@ -19,7 +19,7 @@ dependencies {
     implementation(libs.logback)
     implementation(project(":bank-libs:common"))
     implementation(project(":bank-libs:cluster-protocol"))
-    implementation("org.springframework.boot:spring-boot-starter")
+    implementation(libs.springBootStarter)
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
