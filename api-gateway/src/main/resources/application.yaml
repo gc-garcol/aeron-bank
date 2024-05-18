@@ -1,1 +1,44 @@
-spring.application.name=api-gateway
+spring.application.name: api-gateway
+server.port: 8080
+
+---
+spring:
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        instance-id: ${spring.application.name}:${random.value}
+        instanceZone: bank-app
+        register: false
+        registerHealthCheck: false
+        tags: api-gateway
+      config:
+        enabled: false
+        retry:
+          enabled: true
+          initialInterval: 2
+---
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            maxAge: 3600
+---
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: bank-app
+          uri: lb://bank-service
+          predicates:
+            - Path=/bank/**
+          filters:
+            - RewritePath=/bank/(?<segment>.*), /$\{segment}
