@@ -8,6 +8,7 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
+include("api-gateway")
 include("bank-libs:common", "bank-libs:cluster-protocol", "bank-cluster", "bank-app")
 
 rootProject.name = "aeron-bank"

@@ -1,11 +1,10 @@
 plugins {
     id("java-application-conventions")
-    id("org.springframework.boot") version "3.2.5"
-    id("io.spring.dependency-management") version "1.1.4"
+    id("org.springframework.boot") version libs.versions.springBoot.get()
+    id("io.spring.dependency-management") version libs.versions.springDependencyManagement.get()
 }
 
 group = "gc.garcol"
-//version = "0.0.1"
 
 configurations {
     compileOnly {

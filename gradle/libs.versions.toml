@@ -1,4 +1,6 @@
 [versions]
+springBoot = "3.2.5"
+springDependencyManagement = "1.1.4"
 aeronVersion = "1.44.1"
 sbeVersion = "1.31.1"
 agronaVersion = "1.21.1"
