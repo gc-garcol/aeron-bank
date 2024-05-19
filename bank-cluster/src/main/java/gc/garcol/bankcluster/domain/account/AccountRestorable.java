@@ -8,6 +8,7 @@ public interface AccountRestorable {
 
     /**
      * Loads an account from the snapshot
+     *
      * @param accountId
      * @param amount
      * @param active

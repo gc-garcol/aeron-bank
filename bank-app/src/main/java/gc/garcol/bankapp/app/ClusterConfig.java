@@ -1,20 +1,19 @@
 package gc.garcol.bankapp.app;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Data
+@Configuration
+@ConfigurationProperties(prefix = "cluster")
 public class ClusterConfig {
 
-    @Value("${server.host}")
-    public String serverHost;
+    public String responseHost;
 
-    @Value("${server.port}")
-    public int serverPort;
+    public int responsePort;
 
-    @Value("${cluster.host}")
     public String clusterHosts;
 
-    @Value("${cluster.port}")
     public int clusterPort;
 }

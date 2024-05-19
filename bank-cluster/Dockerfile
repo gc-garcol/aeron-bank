@@ -23,7 +23,7 @@ RUN apt-get remove wget --quiet --assume-yes
 RUN apt-get clean --quiet --assume-yes
 
 WORKDIR /home/aeron/jar/
-COPY --chown=aeron:aeron --chmod=755 /build/libs/cluster-uber.jar /home/aeron/jar/cluster-uber.jar
+COPY --chown=aeron:aeron --chmod=755 /build/libs/bank-cluster.jar /home/aeron/jar/bank-cluster.jar
 COPY --chown=aeron:aeron --chmod=755 ./script/entrypoint.sh /home/aeron/jar/entrypoint.sh
 COPY --chown=aeron:aeron --chmod=755 ./script/describe.sh /home/aeron/jar/describe.sh
 COPY --chown=aeron:aeron --chmod=755 ./script/snapshot.sh /home/aeron/jar/snapshot.sh

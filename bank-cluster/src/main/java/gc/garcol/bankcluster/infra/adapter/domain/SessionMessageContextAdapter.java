@@ -48,15 +48,15 @@ public class SessionMessageContextAdapter extends AbstractSessionMessageContext 
             if (result > 0L) {
                 return;
             } else if (result == Publication.ADMIN_ACTION || result == Publication.BACK_PRESSURED) {
-                LOGGER.warn("backpressure or admin action on snapshot");
+                LOGGER.warn("backpressure or admin action on session offer");
             } else if (result == Publication.NOT_CONNECTED || result == Publication.MAX_POSITION_EXCEEDED) {
-                LOGGER.error("unexpected publication state on snapshot: {}", result);
+                LOGGER.error("unexpected publication state on session offer: {}", result);
                 return;
             }
             idleStrategy.idle();
             retries += 1;
         }
-        LOGGER.error("failed to offer snapshot within {} retries. Closing client session.", RETRY_COUNT);
+        LOGGER.error("failed to offer snapshot within {} retries", RETRY_COUNT);
         session.close();
     }
 

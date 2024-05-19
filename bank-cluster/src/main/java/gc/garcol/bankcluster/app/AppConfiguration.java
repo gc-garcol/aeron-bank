@@ -1,11 +1,10 @@
 package gc.garcol.bankcluster.app;
 
 import gc.garcol.bankcluster.domain.TimerManager;
-import gc.garcol.bankcluster.domain.account.AccountClusterClientResponder;
 import gc.garcol.bankcluster.domain.account.Accounts;
+import gc.garcol.bankcluster.infra.AccountSnapshotManagerImpl;
 import gc.garcol.bankcluster.infra.AppClusteredService;
 import gc.garcol.bankcluster.infra.ClientSessionsImpl;
-import gc.garcol.bankcluster.infra.AccountSnapshotManagerImpl;
 import gc.garcol.bankcluster.infra.adapter.domain.SessionMessageContextAdapter;
 import gc.garcol.bankcluster.infra.adapter.domain.TimerManagerAdapter;
 import gc.garcol.common.core.ClientSessions;
@@ -37,26 +36,22 @@ public class AppConfiguration {
     }
 
     @Bean
-    public SnapshotManager snapshotManager(final Accounts accounts, final SessionMessageContextAdapter context) {
-        return new AccountSnapshotManagerImpl(accounts, context);
+    public SnapshotManager snapshotManager(final Accounts accounts) {
+        return new AccountSnapshotManagerImpl(accounts);
     }
 
     @Bean
     public AppClusteredService appClusteredService(
         final ClientSessions clientSessions,
         final SessionMessageContextAdapter context,
-        final AccountClusterClientResponder accountClusterClientResponder,
         final TimerManager timerManager,
-        final Accounts accounts,
         final SnapshotManager snapshotManager,
         final SbeCommandDispatcher sbeCommandDispatcher
     ) {
         return new AppClusteredService(
             clientSessions,
             context,
-            accountClusterClientResponder,
             timerManager,
-            accounts,
             snapshotManager,
             sbeCommandDispatcher
         );

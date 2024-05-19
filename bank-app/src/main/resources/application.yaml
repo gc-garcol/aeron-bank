@@ -10,8 +10,10 @@ server:
   port: ${SERVER_PORT:8000}
 ---
 cluster:
-  host: ${CLUSTER_HOST:localhost} # separate by ','. Example: "127.0.0.1,127.0.0.2,127.0.0.3"
-  port: ${CLUSTER_PORT:9000}
+  cluster-hosts: ${CLUSTER_HOST:localhost} # separate by ','. Example: "127.0.0.1,127.0.0.2,127.0.0.3"
+  cluster-port: ${CLUSTER_PORT:9000}
+  response-host: ${RESPONSE_HOST:localhost}
+  response-port: ${RESPONSE_PORT:0}
 ---
 logging:
   level:

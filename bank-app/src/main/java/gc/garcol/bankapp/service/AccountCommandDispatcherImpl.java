@@ -15,7 +15,8 @@ public class AccountCommandDispatcherImpl extends AccountCommandDispatcherAbstra
     public void createAccount(CreateAccountCommand command) {
         createAccountCommandBufferEncoder.wrapAndApplyHeader(buffer, 0, messageHeaderEncoder);
         createAccountCommandBufferEncoder.correlationId(command.getCorrelationId());
-        offerRingBufferMessage(buffer, 0, MessageHeaderEncoder.ENCODED_LENGTH);
+        offerRingBufferMessage(buffer, 0,
+            MessageHeaderEncoder.ENCODED_LENGTH + createAccountCommandBufferEncoder.encodedLength());
     }
 
     @Override
@@ -24,7 +25,8 @@ public class AccountCommandDispatcherImpl extends AccountCommandDispatcherAbstra
         depositAccountCommandBufferEncoder.correlationId(command.getCorrelationId());
         depositAccountCommandBufferEncoder.accountId(command.getAccountId());
         depositAccountCommandBufferEncoder.amount(command.getAmount());
-        offerRingBufferMessage(buffer, 0, MessageHeaderEncoder.ENCODED_LENGTH);
+        offerRingBufferMessage(buffer, 0,
+            MessageHeaderEncoder.ENCODED_LENGTH + depositAccountCommandBufferEncoder.encodedLength());
     }
 
     @Override
@@ -33,7 +35,8 @@ public class AccountCommandDispatcherImpl extends AccountCommandDispatcherAbstra
         withdrawAccountCommandBufferEncoder.correlationId(command.getCorrelationId());
         withdrawAccountCommandBufferEncoder.accountId(command.getAccountId());
         withdrawAccountCommandBufferEncoder.amount(command.getAmount());
-        offerRingBufferMessage(buffer, 0, MessageHeaderEncoder.ENCODED_LENGTH);
+        offerRingBufferMessage(buffer, 0,
+            MessageHeaderEncoder.ENCODED_LENGTH + withdrawAccountCommandBufferEncoder.encodedLength());
     }
 
     @Override
@@ -43,7 +46,8 @@ public class AccountCommandDispatcherImpl extends AccountCommandDispatcherAbstra
         transferAccountCommandBufferEncoder.fromAccountId(command.getFromAccountId());
         transferAccountCommandBufferEncoder.toAccountId(command.getToAccountId());
         transferAccountCommandBufferEncoder.amount(command.getAmount());
-        offerRingBufferMessage(buffer, 0, MessageHeaderEncoder.ENCODED_LENGTH);
+        offerRingBufferMessage(buffer, 0,
+            MessageHeaderEncoder.ENCODED_LENGTH + transferAccountCommandBufferEncoder.encodedLength());
     }
 
     private void offerRingBufferMessage(final ExpandableArrayBuffer buffer, final int offset,

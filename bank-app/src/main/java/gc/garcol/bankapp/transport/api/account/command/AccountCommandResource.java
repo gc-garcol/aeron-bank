@@ -20,7 +20,7 @@ public class AccountCommandResource {
 
     @PostMapping("/create")
     public ResponseEntity<String> createAccount(@RequestBody CreateAccountCommand createAccountCommand) {
-        log.info("Creating account with correlationId: {}", createAccountCommand);
+        log.info("Creating account with correlationId: {}", createAccountCommand.getCorrelationId());
         accountCommandDispatcher.createAccount(createAccountCommand);
         return ResponseEntity.ok(createAccountCommand.getCorrelationId());
     }
@@ -38,6 +38,7 @@ public class AccountCommandResource {
         accountCommandDispatcher.withdraw(withdrawAccountCommand);
         return ResponseEntity.ok(withdrawAccountCommand.getCorrelationId());
     }
+
     @PostMapping
     public ResponseEntity<String> transfer(@RequestBody TransferBalanceCommand transferAccountCommand) {
         log.info("Transferring {} from account {} to account {} with correlationId: {}", transferAccountCommand.getAmount(), transferAccountCommand.getFromAccountId(), transferAccountCommand.getToAccountId(), transferAccountCommand.getCorrelationId());

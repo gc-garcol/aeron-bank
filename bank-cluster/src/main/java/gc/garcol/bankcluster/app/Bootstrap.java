@@ -63,7 +63,7 @@ public class Bootstrap {
                 clusterConfig.archiveContext(),
                 clusterConfig.consensusModuleContext()
             );
-            ClusteredServiceContainer ignored1 =ClusteredServiceContainer.launch(clusterConfig.clusteredServiceContext())
+            ClusteredServiceContainer ignored1 = ClusteredServiceContainer.launch(clusterConfig.clusteredServiceContext())
         ) {
             LOGGER.info("Started Cluster Node...");
             barrier.await();

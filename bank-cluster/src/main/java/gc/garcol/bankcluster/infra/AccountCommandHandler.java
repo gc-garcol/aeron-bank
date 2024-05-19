@@ -8,7 +8,10 @@ import org.agrona.DirectBuffer;
  */
 public interface AccountCommandHandler {
     void createAccountCommandHandler(DirectBuffer buffer, int offset);
+
     void depositAccountCommandHandler(DirectBuffer buffer, int offset);
+
     void withdrawAccountCommandHandler(DirectBuffer buffer, int offset);
+
     void transferAccountCommandHandler(DirectBuffer buffer, int offset);
 }

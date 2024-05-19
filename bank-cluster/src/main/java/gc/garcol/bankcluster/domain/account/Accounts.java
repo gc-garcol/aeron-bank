@@ -34,15 +34,18 @@ public class Accounts implements AccountUseCase, AccountRestorable {
 
     @Override
     public void openAccount(String correlationId) {
+        LOGGER.debug("[Start] Create account: (correlationId: {})", correlationId);
         long accountId = idGenerator.getAndIncrement();
         accounts.put(accountId, new Account(accountId));
         accountClusterClientResponder.onAccountAdded(
             correlationId, accountId, AccountResponseCode.ADD_ACCOUNT_SUCCESS
         );
+        LOGGER.debug("[End] Create account: (correlationId: {})", correlationId);
     }
 
     @Override
     public void withdraw(String correlationId, long accountId, long amount) {
+        LOGGER.debug("[Start] Withdraw account: (correlationId: {}, accountId: {}, amount: {})", correlationId, accountId, amount);
         if (!accounts.containsKey(accountId)) {
             LOGGER.warn("Withdrawn account {} does not exist", accountId);
             accountClusterClientResponder.rejectWithdrawAccount(
@@ -61,10 +64,12 @@ public class Accounts implements AccountUseCase, AccountRestorable {
         accountClusterClientResponder.onAccountWithdrawn(
             correlationId, accountId, amount, AccountResponseCode.WITHDRAW_ACCOUNT_SUCCESS
         );
+        LOGGER.debug("[End] Withdraw account: (correlationId: {}, accountId: {}, amount: {})", correlationId, accountId, amount);
     }
 
     @Override
     public void deposit(String correlationId, long accountId, long amount) {
+        LOGGER.debug("[Start] Deposit account: (correlationId: {}, accountId: {}, amount: {})", correlationId, accountId, amount);
         if (!accounts.containsKey(accountId)) {
             LOGGER.warn("Deposited account {} does not exist", accountId);
             accountClusterClientResponder.rejectDepositAccount(
@@ -76,10 +81,12 @@ public class Accounts implements AccountUseCase, AccountRestorable {
         accountClusterClientResponder.onAccountDeposited(
             correlationId, accountId, amount, AccountResponseCode.DEPOSIT_ACCOUNT_SUCCESS
         );
+        LOGGER.debug("[End] Deposit account: (correlationId: {}, accountId: {}, amount: {})", correlationId, accountId, amount);
     }
 
     @Override
     public void transfer(String correlationId, long fromAccountId, long toAccountId, long amount) {
+        LOGGER.debug("[Start] transfer: (correlationId: {}, fromAccountId: {}, toAccountId: {}, amount: {})", correlationId, fromAccountId, toAccountId, amount);
         if (!accounts.containsKey(fromAccountId)) {
             LOGGER.warn("Transferring account {} does not exist", fromAccountId);
             accountClusterClientResponder.rejectTransferAccount(
@@ -107,6 +114,7 @@ public class Accounts implements AccountUseCase, AccountRestorable {
         accountClusterClientResponder.onAccountTransferred(
             correlationId, fromAccountId, toAccountId, amount, AccountResponseCode.TRANSFER_SUCCESS
         );
+        LOGGER.debug("[End] transfer: (correlationId: {}, fromAccountId: {}, toAccountId: {}, amount: {})", correlationId, fromAccountId, toAccountId, amount);
     }
 
     @Override

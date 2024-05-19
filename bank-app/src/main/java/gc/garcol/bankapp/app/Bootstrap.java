@@ -27,7 +27,7 @@ public class Bootstrap {
             tryConnectCluster();
         } catch (Exception e) {
             log.error("CANNOT CONNECT TO CLUSTER", e);
-            System.exit(0);
+             System.exit(0);
         }
     }
 
@@ -41,13 +41,14 @@ public class Bootstrap {
         );
         AgentRunner.startOnThread(agentRunner);
     }
+
     private void tryConnectCluster() {
         log.info("Try to connect to cluster");
         accountCommandHandler.tryConnectToCluster(
             clusterConfig.clusterHosts,
             clusterConfig.clusterPort,
-            clusterConfig.serverHost,
-            clusterConfig.serverPort
+            clusterConfig.responseHost,
+            clusterConfig.responsePort
         );
     }
 }

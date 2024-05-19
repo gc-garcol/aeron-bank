@@ -36,7 +36,8 @@ public abstract class AccountClusterEgressListenerAbstract implements AccountClu
             case WithdrawAccountResultDecoder.TEMPLATE_ID -> processWithdrawAccount(buffer, offset);
             case DepositAccountResultDecoder.TEMPLATE_ID -> processDepositAccount(buffer, offset);
             case TransferAccountResultDecoder.TEMPLATE_ID -> processTransferAccount(buffer, offset);
-            default -> {}
+            default -> {
+            }
         }
     }
 

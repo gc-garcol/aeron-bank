@@ -12,6 +12,7 @@ public class Account {
     private long id;
     private long amount;
     private boolean active;
+
     public Account(long id) {
         this.id = id;
         this.active = true;

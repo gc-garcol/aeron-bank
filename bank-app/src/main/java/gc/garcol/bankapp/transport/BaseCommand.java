@@ -12,6 +12,7 @@ public abstract class BaseCommand {
     {
         this.correlationId = UUID.randomUUID().toString();
     }
+
     @Getter
     protected String correlationId;
 }

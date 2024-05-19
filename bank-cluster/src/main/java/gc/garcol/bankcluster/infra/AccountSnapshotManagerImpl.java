@@ -1,6 +1,5 @@
 package gc.garcol.bankcluster.infra;
 
-import gc.garcol.bankcluster.domain.SessionMessageContext;
 import gc.garcol.bankcluster.domain.account.Accounts;
 import gc.garcol.protocol.*;
 import io.aeron.ExclusivePublication;
@@ -25,9 +24,7 @@ public class AccountSnapshotManagerImpl extends AccountSnapshotManagerAbstract {
     private static final Logger LOGGER = LoggerFactory.getLogger(AccountSnapshotManagerImpl.class);
     private static final int RETRY_COUNT = 3;
 
-    // Inject session
     private final Accounts accounts;
-    private final SessionMessageContext context;
 
     @Setter
     private IdleStrategy idleStrategy;

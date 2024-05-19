@@ -1,8 +1,6 @@
 package gc.garcol.bankcluster.infra;
 
 import gc.garcol.bankcluster.domain.TimerManager;
-import gc.garcol.bankcluster.domain.account.AccountClusterClientResponder;
-import gc.garcol.bankcluster.domain.account.Accounts;
 import gc.garcol.bankcluster.infra.adapter.domain.SessionMessageContextAdapter;
 import gc.garcol.common.core.ClientSessions;
 import gc.garcol.common.core.SbeCommandDispatcher;
@@ -31,9 +29,7 @@ public class AppClusteredService implements ClusteredService {
 
     private final ClientSessions clientSessions;
     private final SessionMessageContextAdapter context;
-    private final AccountClusterClientResponder accountClusterClientResponder;
     private final TimerManager timerManager;
-    private final Accounts accounts;
     private final SnapshotManager snapshotManager;
     private final SbeCommandDispatcher sbeCommandDispatcher;
 
@@ -64,14 +60,13 @@ public class AppClusteredService implements ClusteredService {
     @Override
     public void onSessionMessage(ClientSession session, long timestamp, DirectBuffer buffer,
                                  int offset, int length, Header header) {
-        LOGGER.info("Client session message");
         context.setSessionContext(session, timestamp);
         sbeCommandDispatcher.dispatch(buffer, offset, length);
     }
 
     @Override
     public void onTimerEvent(long correlationId, long timestamp) {
-        LOGGER.info("Timer event");
+        LOGGER.debug("Timer event");
         context.setClusterTime(timestamp);
         timerManager.onTimerEvent(correlationId, timestamp);
     }

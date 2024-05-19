@@ -3,7 +3,6 @@ package gc.garcol.bankcluster.infra;
 import gc.garcol.common.core.CommandHandlerMethod;
 import gc.garcol.common.core.SbeCommandDispatcher;
 import gc.garcol.protocol.MessageHeaderDecoder;
-import lombok.RequiredArgsConstructor;
 import org.agrona.DirectBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,14 +11,12 @@ import org.slf4j.LoggerFactory;
  * @author thaivc
  * @since 2024
  */
-@RequiredArgsConstructor
 public class SbeCommandDispatcherImpl implements SbeCommandDispatcher {
     private static final Logger LOGGER = LoggerFactory.getLogger(SbeCommandDispatcherImpl.class);
 
     private CommandHandlerMethod[] handlers = new CommandHandlerMethod[1 << 5];
 
-    // Inject dependencies
-    private final MessageHeaderDecoder headerDecoder;
+    private final MessageHeaderDecoder headerDecoder = new MessageHeaderDecoder();
 
     @Override
     public int hashCommand(int commandId) {
@@ -44,14 +41,15 @@ public class SbeCommandDispatcherImpl implements SbeCommandDispatcher {
             LOGGER.error("Message too short, ignored.");
             return;
         }
+        headerDecoder.wrap(buffer, offset);
         int hashId = hashCommand(headerDecoder.templateId());
-        if (hashId < 0 || hashId >= handlers.length) {
+        if (hashId <= 0 || hashId >= handlers.length) {
             LOGGER.error("Invalid templateId: {}", headerDecoder.templateId());
             return;
         }
 
-        headerDecoder.wrap(buffer, offset);
         if (handlers[hashId] != null) {
+            LOGGER.debug("Received commandId {}", headerDecoder.templateId());
             handlers[hashId].handle(buffer, offset);
         } else {
             LOGGER.error("No handler for templateId: {}", headerDecoder.templateId());

@@ -7,7 +7,6 @@ import gc.garcol.bankcluster.infra.SbeCommandDispatcherImpl;
 import gc.garcol.common.core.SbeCommandDispatcher;
 import gc.garcol.protocol.CreateAccountCommandDecoder;
 import gc.garcol.protocol.DepositAccountCommandDecoder;
-import gc.garcol.protocol.MessageHeaderDecoder;
 import gc.garcol.protocol.TransferAccountCommandDecoder;
 import gc.garcol.protocol.WithdrawAccountCommandDecoder;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +22,9 @@ import org.springframework.context.annotation.Configuration;
 public class AccountCommandRegister {
     private final Accounts accounts;
 
-    private final MessageHeaderDecoder messageHeaderDecoder = new MessageHeaderDecoder();
-
     @Bean
     public SbeCommandDispatcher accountSbeCommandDispatcher() {
-        return new SbeCommandDispatcherImpl(messageHeaderDecoder);
+        return new SbeCommandDispatcherImpl();
     }
 
     @Bean

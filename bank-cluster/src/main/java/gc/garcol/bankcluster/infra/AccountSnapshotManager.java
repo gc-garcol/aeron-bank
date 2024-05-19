@@ -8,6 +8,8 @@ import org.agrona.DirectBuffer;
  */
 public interface AccountSnapshotManager {
     void onAccountSnapshot(final DirectBuffer buffer, final int offset, final int length);
+
     void onAccountIdGeneratorSnapshot(final DirectBuffer buffer, final int offset, final int length);
+
     void onEndOfSnapshot(final DirectBuffer buffer, final int offset, final int length);
 }

@@ -10,9 +10,9 @@
 
 ## Project structure
 
-- `cluster` - Domain logic
+- `bank-cluster` - Domain logic
 - `bank-app` - Client application that interacts with the cluster
-- `core` - Common libs
+- `bank-libs` - Common modules
 
 ## Run project
 ```shell

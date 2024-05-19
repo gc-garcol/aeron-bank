@@ -3,7 +3,7 @@ name: 'aeron-bank'
 services:
   node0:
     build:
-      context: ./cluster
+      context: ./bank-cluster
     hostname: cluster0
     shm_size: '1gb'
     networks:
@@ -16,7 +16,7 @@ services:
       - CLUSTER_PORT_BASE=9000
   node1:
     build:
-      context: ./cluster
+      context: ./bank-cluster
     hostname: cluster1
     shm_size: '1gb'
     networks:
@@ -29,7 +29,7 @@ services:
       - CLUSTER_PORT_BASE=9000
   node2:
     build:
-      context: ./cluster
+      context: ./bank-cluster
     hostname: cluster2
     shm_size: '1gb'
     networks:

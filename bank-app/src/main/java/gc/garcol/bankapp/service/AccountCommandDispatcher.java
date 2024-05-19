@@ -11,7 +11,10 @@ import gc.garcol.bankapp.transport.api.account.command.WithdrawAccountCommand;
  */
 public interface AccountCommandDispatcher {
     void createAccount(CreateAccountCommand command);
+
     void deposit(DepositAccountCommand command);
+
     void withdraw(WithdrawAccountCommand command);
+
     void transfer(TransferBalanceCommand command);
 }
