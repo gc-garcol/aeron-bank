@@ -19,11 +19,11 @@
 
 ## Run project
 ```shell
-./gradlew
+make build-jar
 
-docker-compose build --no-cache
+make build-image
 
-docker-compose up &
+make run-containers
 ```
 
 ### Generate SBE codecs
