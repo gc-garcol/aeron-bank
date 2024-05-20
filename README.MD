@@ -8,6 +8,9 @@
 ## Pre-requisites
 - `Java 21`
 
+## High-level design
+<img src="./docs/system-design/bank-app-v1.0.0.png" style="width: 100%" alt="bank-app-design">
+
 ## Project structure
 
 - `bank-cluster` - Domain logic
@@ -41,4 +44,4 @@ Caused by: java.lang.reflect.InaccessibleObjectException: Unable to make field p
 ### Solution
 Add ``--add-opens java.base/sun.nio.ch=ALL-UNNAMED`` to the JVM arguments.
 
-![img.png](docs/fix_issue_InaccessibleObjectException.png)
+<img src="./docs/fix_issue_InaccessibleObjectException.png" style="width: 50%;" alt="fix_issue_InaccessibleObjectException">
