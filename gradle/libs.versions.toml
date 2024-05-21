@@ -1,6 +1,8 @@
 [versions]
 springBoot = "3.2.5"
 springDependencyManagement = "1.1.4"
+micrometerOtelVersion="1.3.0"
+opentelemetryExporterVersion="1.32.0"
 aeronVersion = "1.44.1"
 sbeVersion = "1.31.1"
 agronaVersion = "1.21.1"
@@ -20,3 +22,5 @@ picocli = { group = "info.picocli", name = "picocli", version.ref = "picocliVers
 jline = { group = "org.jline", name = "jline", version.ref = "jlineVersion" }
 picoJline = { group = "info.picocli", name = "picocli-shell-jline3", version.ref = "picoJlineVersion" }
 springBootStarter = { group = "org.springframework.boot", name = "spring-boot-starter" , version.ref="springBoot"}
+micrometerOtel = { group = "io.micrometer", name = "micrometer-tracing-bridge-otel", version.ref="micrometerOtelVersion" }
+opentelemetryExporterOtlp = { group = "io.opentelemetry", name = "opentelemetry-exporter-otlp", version.ref="opentelemetryExporterVersion" }

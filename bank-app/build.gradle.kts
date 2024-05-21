@@ -23,15 +23,18 @@ dependencies {
     implementation(libs.aeron)
     implementation(libs.slf4j)
     implementation(libs.logback)
+    implementation(libs.springBootStarter)
+    implementation(libs.micrometerOtel)
+    implementation(libs.opentelemetryExporterOtlp)
     implementation(project(":bank-libs:common"))
     implementation(project(":bank-libs:cluster-protocol"))
-    implementation(libs.springBootStarter)
     implementation("org.springframework.boot:spring-boot-starter-web")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
     implementation("org.springframework.cloud:spring-cloud-starter-consul-discovery")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 }
 extra["springCloudVersion"] = "2023.0.1"
 dependencyManagement {

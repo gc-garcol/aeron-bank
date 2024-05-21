@@ -21,7 +21,7 @@ public class AccountCommandHandlerImpl extends AccountCommandHandlerAbstract {
     @Override
     public void depositAccountCommandHandler(DirectBuffer buffer, int offset) {
         depositAccountCommandDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
-        accounts.withdraw(
+        accounts.deposit(
             depositAccountCommandDecoder.correlationId(),
             depositAccountCommandDecoder.accountId(),
             depositAccountCommandDecoder.amount()
@@ -31,7 +31,7 @@ public class AccountCommandHandlerImpl extends AccountCommandHandlerAbstract {
     @Override
     public void withdrawAccountCommandHandler(DirectBuffer buffer, int offset) {
         withdrawAccountCommandDecoder.wrapAndApplyHeader(buffer, offset, messageHeaderDecoder);
-        accounts.deposit(
+        accounts.withdraw(
             withdrawAccountCommandDecoder.correlationId(),
             withdrawAccountCommandDecoder.accountId(),
             withdrawAccountCommandDecoder.amount()

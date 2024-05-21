@@ -82,11 +82,9 @@ public abstract class SystemCommandHandlerAbstract implements SystemCommandHandl
                 case (int) Publication.MAX_POSITION_EXCEEDED ->
                     log.warn("Maximum position has been exceeded. Message lost.");
                 case (int) Publication.CLOSED -> log.error("Cluster connection is closed");
-                default -> {
-                    idleStrategy[retries++].idle();
-                    log.warn("Failed to send message to cluster. Retrying ( {} of {} )", retries, RETRY_COUNT);
-                }
             }
+            idleStrategy[retries++].idle();
+            log.warn("Failed to send message to cluster. Retrying ( {} of {} )", retries, RETRY_COUNT);
         }
         log.error("Failed to send message to cluster. Message lost.");
 

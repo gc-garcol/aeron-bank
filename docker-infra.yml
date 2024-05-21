@@ -1,6 +1,14 @@
 version: '3.8'
-name: 'consul'
+name: 'bank-infra'
 services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    ports:
+      - "16686:16686" # the jaeger UI
+      - "4317:4317" # the OpenTelemetry collector grpc
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
   consul-server:
     image: hashicorp/consul:latest
     container_name: consul-server

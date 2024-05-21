@@ -17,13 +17,16 @@ dependencies {
     implementation(libs.aeron)
     implementation(libs.slf4j)
     implementation(libs.logback)
+    implementation(libs.micrometerOtel)
+    implementation(libs.opentelemetryExporterOtlp)
+    implementation(libs.springBootStarter)
     implementation(project(":bank-libs:common"))
     implementation(project(":bank-libs:cluster-protocol"))
-    implementation(libs.springBootStarter)
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 }
 
 tasks {

@@ -27,7 +27,7 @@ public class Bootstrap {
             tryConnectCluster();
         } catch (Exception e) {
             log.error("CANNOT CONNECT TO CLUSTER", e);
-             System.exit(0);
+//             System.exit(0);
         }
     }
 

@@ -1,4 +1,13 @@
 spring.application.name: bank-app
+
+---
+management.tracing:
+  enabled: true
+  sampling.probability: 1.0
+
+tracing:
+  url: http://localhost:4317
+logging.pattern.level: "[${spring.application.name:} trace_id=%X{traceId:-} span_id=%X{spanId:-}] %p"
 ---
 spring:
   profiles:
