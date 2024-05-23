@@ -19,7 +19,7 @@ dependencies {
     implementation(libs.micrometerOtel)
     implementation(libs.opentelemetryExporterOtlp)
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-
+    implementation(libs.caffeineCache)
 }
 
 extra["springCloudVersion"] = "2023.0.1"

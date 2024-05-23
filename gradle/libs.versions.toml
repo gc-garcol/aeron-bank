@@ -11,6 +11,7 @@ logbackVersion = "1.4.14"
 picocliVersion = "4.7.5"
 jlineVersion = "3.24.1"
 picoJlineVersion = "4.7.5"
+caffeineVersion = "3.1.8"
 
 [libraries]
 aeron = { group = "io.aeron", name = "aeron-all", version.ref = "aeronVersion" }
@@ -21,6 +22,7 @@ logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "l
 picocli = { group = "info.picocli", name = "picocli", version.ref = "picocliVersion" }
 jline = { group = "org.jline", name = "jline", version.ref = "jlineVersion" }
 picoJline = { group = "info.picocli", name = "picocli-shell-jline3", version.ref = "picoJlineVersion" }
-springBootStarter = { group = "org.springframework.boot", name = "spring-boot-starter" , version.ref="springBoot"}
-micrometerOtel = { group = "io.micrometer", name = "micrometer-tracing-bridge-otel", version.ref="micrometerOtelVersion" }
-opentelemetryExporterOtlp = { group = "io.opentelemetry", name = "opentelemetry-exporter-otlp", version.ref="opentelemetryExporterVersion" }
+springBootStarter = { group = "org.springframework.boot", name = "spring-boot-starter" , version.ref = "springBoot"}
+micrometerOtel = { group = "io.micrometer", name = "micrometer-tracing-bridge-otel", version.ref = "micrometerOtelVersion" }
+opentelemetryExporterOtlp = { group = "io.opentelemetry", name = "opentelemetry-exporter-otlp", version.ref = "opentelemetryExporterVersion" }
+caffeineCache = { group = "com.github.ben-manes.caffeine", name = "caffeine", version.ref = "caffeineVersion" }
