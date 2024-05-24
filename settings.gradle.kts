@@ -9,6 +9,12 @@ plugins {
 }
 
 include("api-gateway")
-include("bank-libs:common", "bank-libs:cluster-protocol", "bank-cluster", "bank-app")
+include(
+    "bank-libs:common",
+    "bank-libs:app-util",
+    "bank-libs:cluster-protocol",
+    "bank-cluster",
+    "bank-app"
+)
 
 rootProject.name = "aeron-bank"

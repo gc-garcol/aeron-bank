@@ -14,12 +14,12 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation("org.springframework.cloud:spring-cloud-starter-gateway")
-    implementation("org.springframework.cloud:spring-cloud-starter-consul-discovery")
+    implementation(libs.caffeineCache)
     implementation(libs.micrometerOtel)
     implementation(libs.opentelemetryExporterOtlp)
+    implementation("org.springframework.cloud:spring-cloud-starter-gateway")
+    implementation("org.springframework.cloud:spring-cloud-starter-consul-discovery")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation(libs.caffeineCache)
 }
 
 extra["springCloudVersion"] = "2023.0.1"
