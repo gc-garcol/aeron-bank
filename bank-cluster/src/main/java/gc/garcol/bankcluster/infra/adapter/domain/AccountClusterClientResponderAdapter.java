@@ -47,12 +47,13 @@ public class AccountClusterClientResponderAdapter extends AccountClusterClientRe
     }
 
     @Override
-    public void onAccountWithdrawn(String correlationId, long accountId, long amount,
+    public void onAccountWithdrawn(String correlationId, long accountId, long amount, long balance,
                                    AccountResponseCode result) {
         withdrawAccountResultEncoder.wrapAndApplyHeader(buffer, 0, messageHeaderEncoder)
             .correlationId(correlationId)
             .accountId(accountId)
             .withdrawAmount(amount)
+            .balance(balance)
             .result(CommandResult.SUCCESS);
         context.reply(
             buffer,
@@ -77,12 +78,13 @@ public class AccountClusterClientResponderAdapter extends AccountClusterClientRe
     }
 
     @Override
-    public void onAccountDeposited(String correlationId, long accountId, long amount,
+    public void onAccountDeposited(String correlationId, long accountId, long amount, long balance,
                                    AccountResponseCode result) {
         depositAccountResultEncoder.wrapAndApplyHeader(buffer, 0, messageHeaderEncoder)
             .correlationId(correlationId)
             .accountId(accountId)
             .depositAmount(amount)
+            .balance(balance)
             .result(CommandResult.SUCCESS);
         context.reply(
             buffer,
@@ -108,12 +110,13 @@ public class AccountClusterClientResponderAdapter extends AccountClusterClientRe
 
     @Override
     public void onAccountTransferred(String correlationId, long fromAccountId, long toAccountId,
-                                     long amount, AccountResponseCode result) {
+                                     long amount, long balance, AccountResponseCode result) {
         transferAccountResultEncoder.wrapAndApplyHeader(buffer, 0, messageHeaderEncoder)
             .correlationId(correlationId)
             .fromAccountId(fromAccountId)
             .toAccountId(toAccountId)
             .transferredAmount(amount)
+            .balance(balance)
             .result(CommandResult.SUCCESS);
         context.reply(
             buffer,

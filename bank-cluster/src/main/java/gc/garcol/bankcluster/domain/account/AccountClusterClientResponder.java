@@ -10,19 +10,19 @@ public interface AccountClusterClientResponder {
 
     void rejectCreateAccount(String correlationId, AccountResponseCode result);
 
-    void onAccountWithdrawn(String correlationId, long accountId, long amount,
+    void onAccountWithdrawn(String correlationId, long accountId, long amount, long balance,
                             AccountResponseCode result);
 
     void rejectWithdrawAccount(String correlationId, long accountId, long amount,
                                AccountResponseCode result);
 
-    void onAccountDeposited(String correlationId, long accountId, long amount,
+    void onAccountDeposited(String correlationId, long accountId, long amount, long balance,
                             AccountResponseCode result);
 
     void rejectDepositAccount(String correlationId, long accountId, long amount,
                               AccountResponseCode result);
 
-    void onAccountTransferred(String correlationId, long fromAccountId, long toAccountId, long amount,
+    void onAccountTransferred(String correlationId, long fromAccountId, long toAccountId, long amount, long balance,
                               AccountResponseCode result);
 
     void rejectTransferAccount(String correlationId, long fromAccountId, long toAccountId,

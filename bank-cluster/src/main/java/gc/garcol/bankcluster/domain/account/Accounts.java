@@ -60,9 +60,9 @@ public class Accounts implements AccountUseCase, AccountRestorable {
             );
             throw new Bank4xxException(String.format("Withdrawn account %s does not have enough balance", accountId));
         }
-        accounts.get(accountId).increase(amount);
+        accounts.get(accountId).decrease(amount);
         accountClusterClientResponder.onAccountWithdrawn(
-            correlationId, accountId, amount, AccountResponseCode.WITHDRAW_ACCOUNT_SUCCESS
+            correlationId, accountId, amount, accounts.get(accountId).getAmount(), AccountResponseCode.WITHDRAW_ACCOUNT_SUCCESS
         );
         LOGGER.debug("[End] Withdraw account: (correlationId: {}, accountId: {}, amount: {})", correlationId, accountId, amount);
     }
@@ -77,9 +77,9 @@ public class Accounts implements AccountUseCase, AccountRestorable {
             );
             throw new Bank4xxException(String.format("Deposited account %s does not exist", accountId));
         }
-        accounts.get(accountId).decrease(amount);
+        accounts.get(accountId).increase(amount);
         accountClusterClientResponder.onAccountDeposited(
-            correlationId, accountId, amount, AccountResponseCode.DEPOSIT_ACCOUNT_SUCCESS
+            correlationId, accountId, amount, accounts.get(accountId).getAmount(), AccountResponseCode.DEPOSIT_ACCOUNT_SUCCESS
         );
         LOGGER.debug("[End] Deposit account: (correlationId: {}, accountId: {}, amount: {})", correlationId, accountId, amount);
     }
@@ -112,7 +112,7 @@ public class Accounts implements AccountUseCase, AccountRestorable {
         fromAccount.decrease(amount);
         accounts.get(toAccountId).increase(amount);
         accountClusterClientResponder.onAccountTransferred(
-            correlationId, fromAccountId, toAccountId, amount, AccountResponseCode.TRANSFER_SUCCESS
+            correlationId, fromAccountId, toAccountId, amount, fromAccount.getAmount(), AccountResponseCode.TRANSFER_SUCCESS
         );
         LOGGER.debug("[End] transfer: (correlationId: {}, fromAccountId: {}, toAccountId: {}, amount: {})", correlationId, fromAccountId, toAccountId, amount);
     }
