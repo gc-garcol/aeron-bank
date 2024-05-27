@@ -1,11 +1,7 @@
 package gc.garcol.bankapp.service;
 
-import gc.garcol.protocol.CreateAccountResultDecoder;
-import gc.garcol.protocol.DepositAccountResultDecoder;
-import gc.garcol.protocol.TransferAccountResultDecoder;
-import gc.garcol.protocol.WithdrawAccountResultDecoder;
+import gc.garcol.protocol.*;
 import io.aeron.cluster.codecs.EventCode;
-import io.aeron.cluster.codecs.MessageHeaderDecoder;
 import io.aeron.logbuffer.Header;
 import lombok.extern.slf4j.Slf4j;
 import org.agrona.DirectBuffer;
@@ -13,7 +9,12 @@ import org.agrona.DirectBuffer;
 @Slf4j
 public abstract class AccountClusterEgressListenerAbstract implements AccountClusterEgressListener {
 
-    private final MessageHeaderDecoder messageHeaderDecoder = new MessageHeaderDecoder();
+    protected final MessageHeaderDecoder messageHeaderDecoder = new MessageHeaderDecoder();
+
+    protected final CreateAccountResultDecoder createAccountResultDecoder = new CreateAccountResultDecoder();
+    protected final DepositAccountResultDecoder depositAccountResultDecoder = new DepositAccountResultDecoder();
+    protected final WithdrawAccountResultDecoder withdrawAccountResultDecoder = new WithdrawAccountResultDecoder();
+    protected final TransferAccountResultDecoder transferAccountResultDecoder = new TransferAccountResultDecoder();
 
     @Override
     public void onMessage(

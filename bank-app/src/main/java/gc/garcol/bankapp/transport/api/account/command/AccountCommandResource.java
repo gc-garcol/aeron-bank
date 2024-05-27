@@ -1,13 +1,16 @@
 package gc.garcol.bankapp.transport.api.account.command;
 
 import gc.garcol.bankapp.service.AccountCommandDispatcher;
+import gc.garcol.bankapp.service.SimpleAccountRequestReplyFuture;
+import gc.garcol.bankapp.transport.ResponseWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.CompletableFuture;
 
 
 @Slf4j
@@ -17,32 +20,38 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountCommandResource {
 
     private final AccountCommandDispatcher accountCommandDispatcher;
+    private final SimpleAccountRequestReplyFuture accountRequestReplyFuture;
 
     @PostMapping("/create")
-    public ResponseEntity<String> createAccount(@RequestBody CreateAccountCommand createAccountCommand) {
-        log.info("Creating account with correlationId: {}", createAccountCommand.getCorrelationId());
-        accountCommandDispatcher.createAccount(createAccountCommand);
-        return ResponseEntity.ok(createAccountCommand.getCorrelationId());
+    public CompletableFuture<ResponseWrapper> createAccount() {
+        var createAccountCommand = new CreateAccountCommand();
+        log.debug("[Async] Creating account with : {}", createAccountCommand);
+        return accountRequestReplyFuture.request(createAccountCommand.getCorrelationId(),
+                () -> accountCommandDispatcher.createAccount(createAccountCommand)
+        );
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<String> deposit(@RequestBody DepositAccountCommand depositAccountCommand) {
-        log.info("Depositing {} to account {} with correlationId: {}", depositAccountCommand.getAmount(), depositAccountCommand.getAccountId(), depositAccountCommand.getCorrelationId());
-        accountCommandDispatcher.deposit(depositAccountCommand);
-        return ResponseEntity.ok(depositAccountCommand.getCorrelationId());
+    public CompletableFuture<ResponseWrapper> deposit(@RequestBody DepositAccountCommand depositCommand) {
+        log.debug("[Async] Depositing with: {}", depositCommand);
+        return accountRequestReplyFuture.request(depositCommand.getCorrelationId(),
+                () -> accountCommandDispatcher.deposit(depositCommand)
+        );
     }
 
     @PostMapping("/withdraw")
-    public ResponseEntity<String> withdraw(@RequestBody WithdrawAccountCommand withdrawAccountCommand) {
-        log.info("Withdrawing {} from account {} with correlationId: {}", withdrawAccountCommand.getAmount(), withdrawAccountCommand.getAccountId(), withdrawAccountCommand.getCorrelationId());
-        accountCommandDispatcher.withdraw(withdrawAccountCommand);
-        return ResponseEntity.ok(withdrawAccountCommand.getCorrelationId());
+    public CompletableFuture<ResponseWrapper> withdraw(@RequestBody WithdrawAccountCommand withdrawCommand) {
+        log.debug("[Async] Withdrawing with correlationId: {}", withdrawCommand.getCorrelationId());
+        return accountRequestReplyFuture.request(withdrawCommand.getCorrelationId(),
+                () -> accountCommandDispatcher.withdraw(withdrawCommand)
+        );
     }
 
-    @PostMapping
-    public ResponseEntity<String> transfer(@RequestBody TransferBalanceCommand transferAccountCommand) {
-        log.info("Transferring {} from account {} to account {} with correlationId: {}", transferAccountCommand.getAmount(), transferAccountCommand.getFromAccountId(), transferAccountCommand.getToAccountId(), transferAccountCommand.getCorrelationId());
-        accountCommandDispatcher.transfer(transferAccountCommand);
-        return ResponseEntity.ok(transferAccountCommand.getCorrelationId());
+    @PostMapping("/transfer")
+    public CompletableFuture<ResponseWrapper> transfer(@RequestBody TransferBalanceCommand transferCommand) {
+        log.debug("[Async] Transferring with: {}", transferCommand);
+        return accountRequestReplyFuture.request(transferCommand.getCorrelationId(),
+                () -> accountCommandDispatcher.transfer(transferCommand)
+        );
     }
 }
