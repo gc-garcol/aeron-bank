@@ -4,9 +4,11 @@ import gc.garcol.bankapp.transport.BaseCommand;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
+@ToString(callSuper=true)
 public class DepositAccountCommand extends BaseCommand {
     private long accountId;
 

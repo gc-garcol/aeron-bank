@@ -4,6 +4,7 @@ import gc.garcol.bankapp.transport.BaseCommand;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author thaivc
@@ -11,6 +12,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
+@ToString(callSuper=true)
 public class TransferBalanceCommand extends BaseCommand {
     private final long fromAccountId;
     private final long toAccountId;

@@ -25,7 +25,7 @@ public class AccountCommandResource {
     @PostMapping("/create")
     public CompletableFuture<ResponseWrapper> createAccount() {
         var createAccountCommand = new CreateAccountCommand();
-        log.debug("[Async] Creating account with : {}", createAccountCommand);
+        log.debug("Creating account with : {}", createAccountCommand);
         return accountRequestReplyFuture.request(createAccountCommand.getCorrelationId(),
                 () -> accountCommandDispatcher.createAccount(createAccountCommand)
         );
