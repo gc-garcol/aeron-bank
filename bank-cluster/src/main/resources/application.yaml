@@ -20,4 +20,5 @@ aeron:
     port: ${CLUSTER_PORT_BASE:9000}
     node: ${CLUSTER_NODE:0}
     baseDir: ${BASE_DIR:./node0}
+    clusterDir: ${aeron.cluster.baseDir}/cluster
     dnsDelay: ${DNS_DELAY:false}
