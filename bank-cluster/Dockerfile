@@ -25,15 +25,6 @@ RUN apt-get clean --quiet --assume-yes
 WORKDIR /home/aeron/jar/
 COPY --chown=aeron:aeron --chmod=755 /build/libs/bank-cluster.jar /home/aeron/jar/bank-cluster.jar
 COPY --chown=aeron:aeron --chmod=755 ./script/entrypoint.sh /home/aeron/jar/entrypoint.sh
-COPY --chown=aeron:aeron --chmod=755 ./script/describe.sh /home/aeron/jar/describe.sh
-COPY --chown=aeron:aeron --chmod=755 ./script/snapshot.sh /home/aeron/jar/snapshot.sh
-COPY --chown=aeron:aeron --chmod=755 ./script/aeronstat_single.sh /home/aeron/jar/aeronstat_single.sh
-COPY --chown=aeron:aeron --chmod=755 ./script/errorstat.sh /home/aeron/jar/errorstat.sh
-COPY --chown=aeron:aeron --chmod=755 ./script/lossstat.sh /home/aeron/jar/lossstat.sh
-COPY --chown=aeron:aeron --chmod=755 ./script/streamstat.sh /home/aeron/jar/streamstat.sh
-COPY --chown=aeron:aeron --chmod=755 ./script/stackdump.sh /home/aeron/jar/stackdump.sh
-COPY --chown=aeron:aeron --chmod=755 ./script/clustererrors.sh /home/aeron/jar/clustererrors.sh
-COPY --chown=aeron:aeron --chmod=755 ./script/noderole.sh /home/aeron/jar/noderole.sh
 
 # Set the user to aeron
 USER aeron
