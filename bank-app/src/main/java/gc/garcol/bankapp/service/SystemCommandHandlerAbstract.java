@@ -26,11 +26,8 @@ import java.util.Objects;
 
 @Slf4j
 public abstract class SystemCommandHandlerAbstract implements SystemCommandHandler {
-    private static final int RETRY_COUNT = 10;
+    private static final int RETRY_COUNT = 5;
     protected ConnectionState connectionState = ConnectionState.NOT_CONNECTED;
-
-    protected final MessageHeaderEncoder messageHeaderEncoder = new MessageHeaderEncoder();
-    protected final MessageHeaderDecoder messageHeaderDecoder = new MessageHeaderDecoder();
 
     @Setter
     protected EgressListener egressListener;
@@ -43,9 +40,12 @@ public abstract class SystemCommandHandlerAbstract implements SystemCommandHandl
 
     {
         for (int i = 0; i < RETRY_COUNT; i++) {
-            idleStrategy[i] = new SleepingMillisIdleStrategy((long) Math.min(Math.pow(100, i), 5_000));
+            idleStrategy[i] = new SleepingMillisIdleStrategy((long) Math.min(100 * Math.pow(2, i), 1_000));
         }
     }
+
+    protected final MessageHeaderEncoder messageHeaderEncoder = new MessageHeaderEncoder();
+    protected final MessageHeaderDecoder messageHeaderDecoder = new MessageHeaderDecoder();
 
     // messages to commandBuffer, sent by system
     protected final ConnectClusterDecoder connectClusterDecoder = new ConnectClusterDecoder();
