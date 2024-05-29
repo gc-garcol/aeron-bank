@@ -85,5 +85,6 @@ public class AppClusteredService implements ClusteredService {
     @Override
     public void onTerminate(final Cluster cluster) {
         LOGGER.info("Terminating");
+        System.exit(9);
     }
 }

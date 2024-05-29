@@ -27,6 +27,7 @@ dependencies {
     implementation(libs.micrometerOtel)
     implementation(libs.opentelemetryExporterOtlp)
     implementation(project(":bank-libs:common"))
+    implementation(project(":bank-libs:app-util"))
     implementation(project(":bank-libs:cluster-protocol"))
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")

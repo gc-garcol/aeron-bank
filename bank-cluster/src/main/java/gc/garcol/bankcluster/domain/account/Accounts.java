@@ -25,7 +25,7 @@ public class Accounts implements AccountUseCase, AccountRestorable {
     private final Long2ObjectHashMap<Account> accounts = new Long2ObjectHashMap<>();
 
     @Getter
-    private final MutableLong idGenerator = new MutableLong(0);
+    private final MutableLong idGenerator = new MutableLong(1);
 
     // Injected dependencies
     private final SessionMessageContext context;

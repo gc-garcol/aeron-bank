@@ -1,5 +1,6 @@
 package gc.garcol.bankapp.transport.api.account.command;
 
+import gc.garcol.apputil.observation.TracingUtil;
 import gc.garcol.bankapp.service.AccountCommandDispatcher;
 import gc.garcol.bankapp.service.SimpleAccountRequestReplyFuture;
 import gc.garcol.bankapp.transport.ResponseWrapper;
@@ -24,6 +25,7 @@ public class AccountCommandResource {
 
     @PostMapping("/create")
     public CompletableFuture<ResponseWrapper> createAccount() {
+        TracingUtil.startNewSpan("create");
         var createAccountCommand = new CreateAccountCommand();
         log.debug("Creating account with : {}", createAccountCommand);
         return accountRequestReplyFuture.request(createAccountCommand.getCorrelationId(),
@@ -33,7 +35,8 @@ public class AccountCommandResource {
 
     @PostMapping("/deposit")
     public CompletableFuture<ResponseWrapper> deposit(@RequestBody DepositAccountCommand depositCommand) {
-        log.debug("[Async] Depositing with: {}", depositCommand);
+        TracingUtil.startNewSpan("deposit");
+        log.debug("Depositing with: {}", depositCommand);
         return accountRequestReplyFuture.request(depositCommand.getCorrelationId(),
                 () -> accountCommandDispatcher.deposit(depositCommand)
         );
@@ -41,7 +44,8 @@ public class AccountCommandResource {
 
     @PostMapping("/withdraw")
     public CompletableFuture<ResponseWrapper> withdraw(@RequestBody WithdrawAccountCommand withdrawCommand) {
-        log.debug("[Async] Withdrawing with correlationId: {}", withdrawCommand.getCorrelationId());
+        TracingUtil.startNewSpan("withdraw");
+        log.debug("Withdrawing with correlationId: {}", withdrawCommand.getCorrelationId());
         return accountRequestReplyFuture.request(withdrawCommand.getCorrelationId(),
                 () -> accountCommandDispatcher.withdraw(withdrawCommand)
         );
@@ -49,7 +53,8 @@ public class AccountCommandResource {
 
     @PostMapping("/transfer")
     public CompletableFuture<ResponseWrapper> transfer(@RequestBody TransferBalanceCommand transferCommand) {
-        log.debug("[Async] Transferring with: {}", transferCommand);
+        TracingUtil.startNewSpan("transfer");
+        log.debug("Transferring with: {}", transferCommand);
         return accountRequestReplyFuture.request(transferCommand.getCorrelationId(),
                 () -> accountCommandDispatcher.transfer(transferCommand)
         );
