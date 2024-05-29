@@ -1,6 +1,5 @@
 package gc.garcol.bankapp.service;
 
-import gc.garcol.bankapp.app.ClusterConfig;
 import gc.garcol.bankapp.service.constants.ConnectionState;
 import gc.garcol.protocol.*;
 import lombok.Setter;
@@ -22,8 +21,6 @@ public abstract class AccountCommandHandlerAbstract extends SystemCommandHandler
     @Setter
     protected OneToOneRingBuffer commandBuffer;
 
-    @Setter
-    protected ClusterConfig clusterConfig;
 
     protected final MutableDirectBuffer sendBuffer = new ExpandableDirectByteBuffer(1 << 10);
     protected final Int2ObjectHashMap<CommandBufferHandler> handlers = new Int2ObjectHashMap<>();
@@ -43,12 +40,7 @@ public abstract class AccountCommandHandlerAbstract extends SystemCommandHandler
     protected CommandBufferHandler wrapClusterConnection(CommandBufferHandler commandHandler) {
         return (buffer, offset) -> {
             if (ConnectionState.NOT_CONNECTED == connectionState) {
-                tryConnectToCluster(
-                    clusterConfig.clusterHosts,
-                    clusterConfig.clusterPort,
-                    clusterConfig.responseHost,
-                    clusterConfig.responsePort
-                );
+                tryConnectToCluster();
             }
             commandHandler.process(buffer, offset);
         };

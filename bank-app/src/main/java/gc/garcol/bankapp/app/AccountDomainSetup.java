@@ -40,12 +40,12 @@ public class AccountDomainSetup {
     public AccountCommandHandlerImpl accountCommandHandler(
         final OneToOneRingBuffer commandBuffer,
         final AccountClusterEgressListener egressListener,
-        final ClusterConfig clusterConfig
+        final ClusterVariable clusterVariable
     ) {
         var accountCommandHandler = new AccountCommandHandlerImpl();
         accountCommandHandler.setCommandBuffer(commandBuffer);
         accountCommandHandler.setEgressListener(egressListener);
-        accountCommandHandler.setClusterConfig(clusterConfig);
+        accountCommandHandler.setClusterVariable(clusterVariable);
         return accountCommandHandler;
     }
 }

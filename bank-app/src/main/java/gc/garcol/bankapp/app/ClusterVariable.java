@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "cluster")
-public class ClusterConfig {
+public class ClusterVariable {
 
     public String responseHost;
 

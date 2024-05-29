@@ -7,7 +7,9 @@ management.tracing:
 
 tracing:
   url: http://localhost:4317
-logging.pattern.level: "[${spring.application.name:} trace_id=%X{traceId:-} span_id=%X{spanId:-}] %p"
+logging:
+  pattern.correlation: "[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  include-application-name: false
 ---
 logging:
   level:
