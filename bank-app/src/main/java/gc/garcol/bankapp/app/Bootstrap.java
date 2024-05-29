@@ -18,7 +18,6 @@ public class Bootstrap {
     private final AccountCommandHandler commandHandler;
     private final IdleStrategy commandIdleStrategy;
     private final AccountCommandHandlerImpl accountCommandHandler;
-    private final ClusterVariable clusterVariable;
 
     @EventListener(ApplicationReadyEvent.class)
     public void start() {
