@@ -1,5 +1,6 @@
 package gc.garcol.bankapp.service;
 
+import gc.garcol.bankapp.app.ClusterVariable;
 import gc.garcol.bankapp.service.constants.ConnectionState;
 import gc.garcol.common.exception.Bank5xxException;
 import gc.garcol.protocol.ConnectClusterDecoder;
@@ -33,6 +34,8 @@ public abstract class SystemCommandHandlerAbstract implements SystemCommandHandl
 
     @Setter
     protected EgressListener egressListener;
+    @Setter
+    protected ClusterVariable clusterVariable;
     protected AeronCluster aeronCluster;
     protected MediaDriver mediaDriver;
 
@@ -78,10 +81,18 @@ public abstract class SystemCommandHandlerAbstract implements SystemCommandHandl
             switch (resultInt) {
                 case (int) Publication.ADMIN_ACTION -> log.warn("Admin action on cluster offer");
                 case (int) Publication.BACK_PRESSURED -> log.warn("Backpressure on cluster offer");
-                case (int) Publication.NOT_CONNECTED -> log.warn("Cluster is not connected. Message losts.");
+                case (int) Publication.NOT_CONNECTED -> {
+                    log.warn("Cluster is not connected. Message loses.");
+                    connectionState = ConnectionState.NOT_CONNECTED;
+                    tryConnectToCluster();
+                }
                 case (int) Publication.MAX_POSITION_EXCEEDED ->
                     log.warn("Maximum position has been exceeded. Message lost.");
-                case (int) Publication.CLOSED -> log.error("Cluster connection is closed");
+                case (int) Publication.CLOSED -> {
+                    log.error("Cluster connection is closed");
+                    connectionState = ConnectionState.NOT_CONNECTED;
+                    tryConnectToCluster();
+                }
             }
             idleStrategy[retries++].idle();
             log.warn("Failed to send message to cluster. Retrying ( {} of {} )", retries, RETRY_COUNT);
@@ -91,13 +102,18 @@ public abstract class SystemCommandHandlerAbstract implements SystemCommandHandl
     }
 
     @Override
-    public void tryConnectToCluster(String clusterHosts, int clusterPort, String serverHost,
-                                    int serverPort) {
+    public void tryConnectToCluster() {
         if (connectionState == ConnectionState.CONNECTED) {
             log.info("Already connected to cluster");
             return;
         }
-        connectCluster(clusterPort, serverPort, clusterHosts, serverHost);
+        log.info("Try to connect to cluster");
+        connectCluster(
+                clusterVariable.clusterPort,
+                clusterVariable.responsePort,
+                clusterVariable.clusterHosts,
+                clusterVariable.responseHost
+        );
         connectionState = ConnectionState.CONNECTED;
     }
 
@@ -105,7 +121,8 @@ public abstract class SystemCommandHandlerAbstract implements SystemCommandHandl
         final int basePort,
         final int port,
         final String clusterHosts,
-        final String localHostName) {
+        final String localHostName
+    ) {
         final List<String> hostnames = Arrays.asList(clusterHosts.split(","));
         final String ingressEndpoints = ClusterConfig.ingressEndpoints(
             hostnames, basePort, ClusterConfig.CLIENT_FACING_PORT_OFFSET);

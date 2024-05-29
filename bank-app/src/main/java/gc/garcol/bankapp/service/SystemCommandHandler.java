@@ -11,5 +11,5 @@ public interface SystemCommandHandler {
 
     void processDisconnectCluster(final MutableDirectBuffer buffer, final int offset);
 
-    void tryConnectToCluster(String clusterHosts, int clusterPort, String serverHost, int serverPort);
+    void tryConnectToCluster();
 }

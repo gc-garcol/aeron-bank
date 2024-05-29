@@ -18,7 +18,7 @@ public class Bootstrap {
     private final AccountCommandHandler commandHandler;
     private final IdleStrategy commandIdleStrategy;
     private final AccountCommandHandlerImpl accountCommandHandler;
-    private final ClusterConfig clusterConfig;
+    private final ClusterVariable clusterVariable;
 
     @EventListener(ApplicationReadyEvent.class)
     public void start() {
@@ -44,11 +44,6 @@ public class Bootstrap {
 
     private void tryConnectCluster() {
         log.info("Try to connect to cluster");
-        accountCommandHandler.tryConnectToCluster(
-            clusterConfig.clusterHosts,
-            clusterConfig.clusterPort,
-            clusterConfig.responseHost,
-            clusterConfig.responsePort
-        );
+        accountCommandHandler.tryConnectToCluster();
     }
 }
