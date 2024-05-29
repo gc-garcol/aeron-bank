@@ -1,6 +1,7 @@
 package gc.garcol.bankcluster.app;
 
 import gc.garcol.bankcluster.infra.AppClusteredService;
+import gc.garcol.common.core.ClusterToolDispatcher;
 import gc.garcol.common.exception.BankException;
 import io.aeron.cluster.ClusteredMediaDriver;
 import io.aeron.cluster.service.ClusteredServiceContainer;
@@ -40,6 +41,9 @@ public class Bootstrap {
 
     @Autowired
     private AppClusteredService appClusteredService;
+
+    @Autowired
+    private ClusterToolDispatcher clusterToolDispatcher;
 
     @EventListener(ApplicationReadyEvent.class)
     public void start() {

@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.agrona.concurrent.AgentRunner;
 import org.agrona.concurrent.IdleStrategy;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 
@@ -21,7 +19,6 @@ public class Bootstrap {
     private final IdleStrategy commandIdleStrategy;
     private final AccountCommandHandlerImpl accountCommandHandler;
     private final ClusterConfig clusterConfig;
-    private final ConfigurableApplicationContext context;
 
     @EventListener(ApplicationReadyEvent.class)
     public void start() {
@@ -30,8 +27,7 @@ public class Bootstrap {
             tryConnectCluster();
         } catch (Exception e) {
             log.error("CANNOT CONNECT TO CLUSTER", e);
-            int exitCode = SpringApplication.exit(context, () -> 0);
-            System.exit(exitCode);
+            System.exit(9);
         }
     }
 

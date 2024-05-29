@@ -15,7 +15,7 @@ public class AppScheduler {
 
     private final ClusterToolDispatcher clusterToolDispatcher;
 
-    @Scheduled(fixedDelay = 60_000)
+    @Scheduled(fixedDelay = 60_000, initialDelay = 60_000)
     public void snapshot() {
         clusterToolDispatcher.triggerSnapshot();
     }
