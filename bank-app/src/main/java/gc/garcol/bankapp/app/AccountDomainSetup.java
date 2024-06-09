@@ -25,7 +25,7 @@ public class AccountDomainSetup {
     @Bean
     public OneToOneRingBuffer commandBuffer() {
         final var adminClusterBuffer =
-            new UnsafeBuffer(BufferUtil.allocateDirectAligned((1 << 15) + TRAILER_LENGTH, 8));
+            new UnsafeBuffer(BufferUtil.allocateDirectAligned((1 << 28) + TRAILER_LENGTH, 8));
         return new OneToOneRingBuffer(adminClusterBuffer);
     }
 

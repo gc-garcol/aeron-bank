@@ -70,6 +70,17 @@ public abstract class AccountCommandHandlerAbstract extends SystemCommandHandler
         return "account-agent";
     }
 
+    @Override
+    public void onClose() {
+        log.info("On close cluster");
+        if (aeronCluster != null) {
+            aeronCluster.close();
+        }
+        if (mediaDriver != null) {
+            mediaDriver.close();
+        }
+    }
+
     private void sendClusterHeartbeat() {
         final long now = SystemEpochClock.INSTANCE.time();
         if (now >= lastHeartbeatTime + 250) {

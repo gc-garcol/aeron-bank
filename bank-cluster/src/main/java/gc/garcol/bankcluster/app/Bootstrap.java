@@ -93,7 +93,7 @@ public class Bootstrap {
         while (!resolved) {
             if (SystemEpochClock.INSTANCE.time() > endTime) {
                 LOGGER.error("cannot resolve name {}, exiting", host);
-                System.exit(-1);
+                System.exit(9);
             }
 
             try {
