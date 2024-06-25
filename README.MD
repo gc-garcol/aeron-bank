@@ -13,9 +13,6 @@
 ### Architect overview
 <img src="./docs/system-design/bank-app-v1.0.0.png" style="width: 100%" alt="bank-app-design">
 
-### How a Request is Processed
-<img src="./docs/system-design/flow.png" style="width: 50%; min-width: 360px" alt="flow">
-
 ## Project structure
 
 - `bank-cluster` - Domain logic
